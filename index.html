@@ -6,173 +6,250 @@
 <title>Mi Cartera de Clientes</title>
 <style>
   :root{
-    --bg:#0f1115;
-    --panel:#171a21;
+    color-scheme:dark;
+    --bg:#0d0f14;
+    --panel:#161920;
     --panel2:#1e222b;
+    --hover:#262b36;
     --border:#2a2f3a;
-    --text:#e8eaed;
-    --muted:#9aa3b2;
-    --accent:#4f8cff;
-    --accent2:#3a6fd8;
-    --red:#ef4444;
-    --red-bg:#2a1414;
+    --text:#eceef2;
+    --muted:#98a1b2;
+    --accent:#5b93ff;
+    --accent2:#4279e6;
+    --on-accent:#ffffff;
+    --red:#f26464;
+    --red-strong:#d63a3a;
+    --red-bg:#2c1617;
     --amber:#f2a93b;
-    --amber-bg:#2a2314;
+    --amber-bg:#2b2314;
     --green:#3ecf8e;
-    --green-bg:#122a22;
-    --grey-bg:#1b1e26;
-    --radius:14px;
-    --shadow:0 4px 18px rgba(0,0,0,0.35);
+    --green-bg:#12291f;
+    --blue:#6ab0f2;
+    --blue-bg:#14212c;
+    --grey-bg:#20242d;
+    --radius:16px;
+    --shadow:0 10px 30px rgba(0,0,0,0.45);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      color-scheme:light;
+      --bg:#f3f4f8;
+      --panel:#ffffff;
+      --panel2:#f1f3f7;
+      --hover:#e6e9f0;
+      --border:#dde1e9;
+      --text:#171a21;
+      --muted:#667085;
+      --accent:#2f6fed;
+      --accent2:#2259cc;
+      --red:#d92d20;
+      --red-strong:#b42318;
+      --red-bg:#fde9e7;
+      --amber:#a86200;
+      --amber-bg:#fdf0d8;
+      --green:#0f7a56;
+      --green-bg:#dcf5ea;
+      --blue:#1d6fb8;
+      --blue-bg:#e1effb;
+      --grey-bg:#eceef3;
+      --shadow:0 10px 30px rgba(20,30,60,0.14);
+    }
   }
   *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
   body{
     margin:0;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--bg);
     color:var(--text);
     min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
   }
-  .wrap{max-width:720px;margin:0 auto;padding:16px 14px 100px;}
+  button, input, select, textarea{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 110px;}
   header{
     display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:14px; gap:10px;
+    margin-bottom:18px; gap:10px;
   }
-  header h1{font-size:19px;margin:0;font-weight:700;}
-  header .sub{font-size:12px;color:var(--muted);margin-top:2px;}
+  header h1{font-size:22px;margin:0;font-weight:800;letter-spacing:-0.02em;}
+  header .sub{font-size:13px;color:var(--muted);margin-top:3px;}
   .icon-btn{
-    background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    border-radius:10px; padding:8px 10px; font-size:13px; cursor:pointer;
+    background:var(--panel); border:1px solid var(--border); color:var(--text);
+    border-radius:12px; width:42px; height:42px; font-size:18px; cursor:pointer;
+    transition:background .15s;
   }
-  .icon-btn:hover{background:#262b36;}
+  .icon-btn:hover{background:var(--hover);}
 
-  .summary{
-    display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:16px;
-  }
+  .summary{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;}
   .summary .card{
     background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
-    padding:10px 8px; text-align:center; cursor:pointer; transition:transform .1s;
+    padding:14px 8px 12px; text-align:center; cursor:pointer; color:inherit;
+    transition:transform .1s, border-color .15s, background .15s;
   }
+  .summary .card:hover{background:var(--panel2);}
   .summary .card:active{transform:scale(0.97);}
-  .summary .card .num{font-size:22px; font-weight:800;}
-  .summary .card .lbl{font-size:11px; color:var(--muted); margin-top:2px;}
+  .summary .card .num{font-size:28px; font-weight:800; line-height:1; letter-spacing:-0.02em;}
+  .summary .card .lbl{font-size:12px; color:var(--muted); margin-top:6px;}
   .summary .card.hoy .num{color:var(--red);}
   .summary .card.semana .num{color:var(--amber);}
   .summary .card.total .num{color:var(--accent);}
-  .summary .card.active{border-color:var(--accent);}
+  .summary .card.hoy.active{border-color:var(--red); background:var(--red-bg);}
+  .summary .card.semana.active{border-color:var(--amber); background:var(--amber-bg);}
+  .summary .card.total.active{border-color:var(--accent);}
 
-  .search-row{display:flex; gap:8px; margin-bottom:12px;}
-  .search-row input[type=text]{
-    flex:1; background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    border-radius:10px; padding:10px 12px; font-size:14px;
+  .search{
+    width:100%; background:var(--panel); border:1px solid var(--border); color:var(--text);
+    border-radius:12px; padding:12px 14px; font-size:15px; margin-bottom:10px;
   }
-  select.filter{
-    background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    border-radius:10px; padding:10px 8px; font-size:13px;
-  }
+  .search::placeholder{color:var(--muted);}
 
-  .list{display:flex; flex-direction:column; gap:8px;}
-  .empty{
-    text-align:center; color:var(--muted); padding:40px 10px; font-size:14px;
+  .chips{
+    display:flex; gap:6px; overflow-x:auto; margin:0 -16px 14px; padding:2px 16px;
+    scrollbar-width:none;
   }
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:none; background:transparent; border:1px solid var(--border); color:var(--muted);
+    border-radius:20px; padding:7px 13px; font-size:13px; font-weight:600; cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .chip:hover{background:var(--panel2);}
+  .chip.active{background:var(--text); border-color:var(--text); color:var(--bg);}
+
+  .list{display:flex; flex-direction:column; gap:10px;}
+  .empty{text-align:center; color:var(--muted); padding:48px 10px; font-size:14px; line-height:1.6;}
+  .empty .big{font-size:34px; margin-bottom:8px;}
 
   .client{
     background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
-    padding:12px 14px; cursor:pointer; position:relative; overflow:hidden;
+    padding:14px 14px 14px 18px; cursor:pointer; position:relative; overflow:hidden;
+    transition:background .15s, transform .1s;
   }
-  .client::before{
-    content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
-  }
+  .client:hover{background:var(--panel2);}
+  .client:active{transform:scale(0.99);}
+  .client::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px;}
   .client.urg-hoy::before{background:var(--red);}
-  .client.urg-vencido::before{background:#b91c1c;}
+  .client.urg-vencido::before{background:var(--red-strong);}
   .client.urg-semana::before{background:var(--amber);}
   .client.urg-futuro::before{background:var(--border);}
   .client.urg-done::before{background:var(--green);}
+  .client.urg-done{opacity:.8;}
 
-  .client-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
-  .client-name{font-size:15px; font-weight:700;}
-  .client-dni{font-size:12px; color:var(--muted); margin-top:1px;}
+  .client-top{display:flex; align-items:center; gap:12px;}
+  .avatar{
+    flex:none; width:40px; height:40px; border-radius:50%; background:var(--panel2);
+    border:1px solid var(--border); color:var(--muted);
+    display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;
+  }
+  .client-id{flex:1; min-width:0;}
+  .client-name{font-size:16px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .client-dni{font-size:12.5px; color:var(--muted); margin-top:2px;}
   .badge{
-    font-size:11px; font-weight:700; padding:3px 8px; border-radius:20px; white-space:nowrap;
+    display:inline-block; font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; white-space:nowrap;
   }
   .badge.hoy{background:var(--red-bg); color:var(--red);}
-  .badge.vencido{background:var(--red-bg); color:#ff8a8a;}
+  .badge.vencido{background:var(--red-bg); color:var(--red);}
   .badge.semana{background:var(--amber-bg); color:var(--amber);}
   .badge.futuro{background:var(--grey-bg); color:var(--muted);}
   .badge.pagado{background:var(--green-bg); color:var(--green);}
-  .badge.agendado{background:#14202a; color:#6ab0f2;}
-  .badge.perdido{background:var(--grey-bg); color:#777;}
+  .badge.agendado{background:var(--blue-bg); color:var(--blue);}
+  .badge.perdido{background:var(--grey-bg); color:var(--muted);}
 
-  .client-meta{display:flex; justify-content:space-between; margin-top:8px; font-size:12px; color:var(--muted);}
-  .client-notas{font-size:12px; color:var(--muted); margin-top:6px; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .client-meta{
+    display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:10px; font-size:13px; color:var(--muted);
+  }
+  .client-meta b{color:var(--text); font-weight:600;}
+  .client-notas{
+    font-size:13px; color:var(--muted); margin-top:8px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
 
   .fab{
-    position:fixed; bottom:22px; right:50%; transform:translateX(360px);
-    background:var(--accent); color:white; border:none; width:56px; height:56px;
-    border-radius:50%; font-size:26px; cursor:pointer; box-shadow:var(--shadow);
-    display:flex; align-items:center; justify-content:center;
-  }
-  @media (max-width:760px){
-    .fab{right:20px; transform:none;}
+    position:fixed; bottom:22px; right:max(20px, calc(50% - 344px));
+    background:var(--accent); color:var(--on-accent); border:none; width:58px; height:58px;
+    border-radius:50%; font-size:28px; cursor:pointer; box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center; transition:background .15s, transform .1s;
   }
   .fab:hover{background:var(--accent2);}
+  .fab:active{transform:scale(0.94);}
 
   .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none;
+    position:fixed; inset:0; background:rgba(0,0,0,0.55); display:none;
     align-items:flex-end; justify-content:center; z-index:50;
+    backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
   }
   .overlay.show{display:flex;}
   .sheet{
-    background:var(--panel); width:100%; max-width:720px; border-radius:18px 18px 0 0;
-    padding:18px; max-height:88vh; overflow-y:auto; box-shadow:var(--shadow);
-    animation:slideup .18s ease-out;
+    position:relative;
+    background:var(--panel); width:100%; max-width:720px; border-radius:22px 22px 0 0;
+    padding:26px 18px 22px; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow);
+    animation:slideup .2s ease-out;
+  }
+  .sheet::before{
+    content:""; position:absolute; top:9px; left:50%; transform:translateX(-50%);
+    width:38px; height:4px; border-radius:4px; background:var(--border);
+  }
+  @media (min-width:760px){
+    .overlay{align-items:center;}
+    .sheet{max-width:520px; border-radius:22px;}
+    .sheet::before{display:none;}
   }
   @keyframes slideup{from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-  .sheet h2{margin:0 0 14px; font-size:17px;}
+  @media (prefers-reduced-motion: reduce){ .sheet{animation:none;} }
+  .sheet h2{margin:0 44px 14px 0; font-size:19px; letter-spacing:-0.01em;}
   .sheet .close{
-    position:absolute; top:14px; right:16px; background:none; border:none; color:var(--muted);
-    font-size:20px; cursor:pointer;
+    position:absolute; top:18px; right:14px; width:34px; height:34px; border-radius:50%;
+    background:var(--panel2); border:none; color:var(--muted); font-size:15px; cursor:pointer;
   }
-  .field{margin-bottom:12px;}
-  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:5px;}
+  .sheet .close:hover{background:var(--hover); color:var(--text);}
+  .field{margin-bottom:13px;}
+  .field label{display:block; font-size:12.5px; color:var(--muted); margin-bottom:6px; font-weight:600;}
   .field input, .field select, .field textarea{
     width:100%; background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    border-radius:10px; padding:10px 12px; font-size:14px; font-family:inherit;
+    border-radius:11px; padding:11px 12px; font-size:15px;
   }
-  .field textarea{resize:vertical; min-height:50px;}
+  .field textarea{resize:vertical; min-height:56px;}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .hint{font-size:11px; color:var(--muted); margin-top:4px;}
+  .hint{font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4;}
 
   .btn{
-    width:100%; padding:12px; border-radius:10px; border:none; font-size:14px; font-weight:700;
-    cursor:pointer; margin-top:6px;
+    display:block; width:100%; padding:13px; border-radius:12px; border:1px solid transparent;
+    font-size:14.5px; font-weight:700; cursor:pointer; margin-top:8px; text-align:center;
+    text-decoration:none; transition:background .15s;
   }
-  .btn.primary{background:var(--accent); color:white;}
+  .btn.primary{background:var(--accent); color:var(--on-accent);}
   .btn.primary:hover{background:var(--accent2);}
   .btn.danger{background:var(--red-bg); color:var(--red);}
-  .btn.ghost{background:var(--panel2); color:var(--text); border:1px solid var(--border);}
-
-  .detail-section{margin-top:18px; border-top:1px solid var(--border); padding-top:14px;}
-  .detail-section h3{font-size:13px; color:var(--muted); margin:0 0 10px; text-transform:uppercase; letter-spacing:.03em;}
-
-  .hist-item{
-    background:var(--panel2); border-radius:10px; padding:10px 12px; margin-bottom:8px; font-size:13px;
-  }
-  .hist-item .hd{display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-bottom:3px;}
+  .btn.ghost{background:var(--panel2); color:var(--text); border-color:var(--border);}
+  .btn.ghost:hover{background:var(--hover);}
   .btn-row{display:flex; gap:8px; margin-top:8px;}
-  .btn-row .btn{margin-top:0;}
+  .btn-row .btn{margin-top:0; padding:12px 6px; font-size:13.5px;}
+
+  .det-sub{color:var(--muted); font-size:13.5px; margin:-8px 0 10px;}
+  .det-fechas{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; font-size:13px; color:var(--muted); margin-bottom:14px;}
+  .det-notas{font-size:14.5px; white-space:pre-wrap; line-height:1.45;}
+
+  .detail-section{margin-top:20px; border-top:1px solid var(--border); padding-top:16px;}
+  .detail-section h3{font-size:12px; color:var(--muted); margin:0 0 12px; text-transform:uppercase; letter-spacing:.06em;}
+
+  .hist-item{background:var(--panel2); border-radius:11px; padding:10px 12px; margin-bottom:8px; font-size:14px;}
+  .hist-item .hd{display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:3px;}
+  .hist-item .hd b{color:var(--text); font-weight:600;}
 
   .toast{
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-    background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    padding:10px 18px; border-radius:30px; font-size:13px; box-shadow:var(--shadow);
-    opacity:0; transition:opacity .2s; z-index:100; pointer-events:none;
+    position:fixed; bottom:92px; left:50%; transform:translateX(-50%) translateY(8px);
+    background:var(--text); color:var(--bg);
+    padding:11px 18px; border-radius:30px; font-size:13.5px; font-weight:600; box-shadow:var(--shadow);
+    opacity:0; transition:opacity .2s, transform .2s; z-index:100; pointer-events:none;
+    display:flex; align-items:center; gap:14px; white-space:nowrap;
   }
-  .toast.show{opacity:1;}
-
-  .footer-actions{display:flex; gap:8px; justify-content:center; margin-top:18px;}
-  .footer-actions button{
-    background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer;
-    text-decoration:underline;
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+  .toast button{
+    background:none; border:none; color:inherit; font-weight:800; font-size:13.5px;
+    text-decoration:underline; cursor:pointer; padding:0;
   }
 </style>
 </head>
@@ -180,69 +257,78 @@
 <div class="wrap">
   <header>
     <div>
-      <h1>📋 Mi Cartera de Clientes</h1>
-      <div class="sub">Control de llamados y promesas de pago</div>
+      <h1>Mi Cartera de Clientes</h1>
+      <div class="sub" id="fechaHoy">Control de llamados y promesas de pago</div>
     </div>
-    <button class="icon-btn" id="btnMenu">⋮</button>
+    <button class="icon-btn" id="btnMenu" aria-label="Opciones">⋮</button>
   </header>
 
   <div class="summary">
-    <div class="card hoy" data-filter="hoy"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></div>
-    <div class="card semana" data-filter="semana"><div class="num" id="cntSemana">0</div><div class="lbl">Esta semana</div></div>
-    <div class="card total" data-filter="activos"><div class="num" id="cntActivos">0</div><div class="lbl">Activos</div></div>
+    <button class="card hoy" data-filter="hoy"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></button>
+    <button class="card semana" data-filter="semana"><div class="num" id="cntSemana">0</div><div class="lbl">Esta semana</div></button>
+    <button class="card total" data-filter="activos"><div class="num" id="cntActivos">0</div><div class="lbl">Activos</div></button>
   </div>
 
-  <div class="search-row">
-    <input type="text" id="searchBox" placeholder="Buscar por DNI o nombre...">
-    <select class="filter" id="filterSelect">
-      <option value="activos">Activos</option>
-      <option value="todos">Todos</option>
-      <option value="hoy">Llamar hoy</option>
-      <option value="vencido">Vencidos</option>
-      <option value="semana">Esta semana</option>
-      <option value="agendado">Agendados</option>
-      <option value="pagado">Pagaron</option>
-      <option value="perdido">Perdidos</option>
-    </select>
+  <input type="text" class="search" id="searchBox" placeholder="Buscar por DNI, nombre o teléfono…">
+
+  <div class="chips" id="chips">
+    <button class="chip" data-filter="activos">Activos</button>
+    <button class="chip" data-filter="hoy">Llamar hoy</button>
+    <button class="chip" data-filter="vencido">Vencidos</button>
+    <button class="chip" data-filter="semana">Esta semana</button>
+    <button class="chip" data-filter="agendado">Agendados</button>
+    <button class="chip" data-filter="pagado">Pagaron</button>
+    <button class="chip" data-filter="perdido">Perdidos</button>
+    <button class="chip" data-filter="todos">Todos</button>
   </div>
 
   <div class="list" id="list"></div>
 </div>
 
-<button class="fab" id="btnNuevo">+</button>
+<button class="fab" id="btnNuevo" aria-label="Nuevo cliente">+</button>
 
 <!-- Overlay: nuevo/editar cliente -->
 <div class="overlay" id="overlayForm">
   <div class="sheet">
-    <button class="close" data-close>✕</button>
+    <button class="close" data-close aria-label="Cerrar">✕</button>
     <h2 id="formTitle">Nuevo cliente</h2>
     <form id="clientForm">
       <input type="hidden" id="f_id">
       <div class="row2">
         <div class="field">
-          <label>DNI</label>
+          <label for="f_dni">DNI</label>
           <input type="text" id="f_dni" inputmode="numeric" required>
         </div>
         <div class="field">
-          <label>Nombre y apellido</label>
+          <label for="f_nombre">Nombre y apellido</label>
           <input type="text" id="f_nombre" required>
         </div>
       </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f_telefono">Teléfono (opcional)</label>
+          <input type="tel" id="f_telefono" inputmode="tel">
+        </div>
+        <div class="field">
+          <label for="f_monto">Monto adeudado (opcional)</label>
+          <input type="number" id="f_monto" inputmode="decimal" min="0" step="any">
+        </div>
+      </div>
       <div class="field">
-        <label>Fecha en que el cliente prometió pagar</label>
+        <label for="f_fechaPromesa">Fecha en que el cliente prometió pagar</label>
         <input type="date" id="f_fechaPromesa" required>
       </div>
       <div class="field">
-        <label>Fecha para volver a llamar (se calcula sola, 5 días antes — la podés ajustar)</label>
+        <label for="f_fechaLlamado">Fecha para volver a llamar</label>
         <input type="date" id="f_fechaLlamado" required>
-        <div class="hint">El sistema solo te deja agendar la promesa hasta 5 días antes. Esta es la fecha en que se habilita.</div>
+        <div class="hint">Se calcula sola, 5 días antes de la promesa (cuando el sistema ya te deja agendarla). La podés ajustar.</div>
       </div>
       <div class="field">
-        <label>Notas</label>
+        <label for="f_notas">Notas</label>
         <textarea id="f_notas" placeholder="Ej: dice que cobra el día 30, pedir que mande comprobante..."></textarea>
       </div>
       <button type="submit" class="btn primary" id="btnGuardar">Guardar cliente</button>
-      <button type="button" class="btn danger" id="btnEliminar" style="display:none;">Eliminar cliente</button>
+      <button type="button" class="btn danger" id="btnEliminar" hidden>Eliminar cliente</button>
     </form>
   </div>
 </div>
@@ -250,23 +336,29 @@
 <!-- Overlay: detalle cliente -->
 <div class="overlay" id="overlayDetail">
   <div class="sheet">
-    <button class="close" data-close>✕</button>
+    <button class="close" data-close aria-label="Cerrar">✕</button>
     <h2 id="detNombre">Cliente</h2>
-    <div class="sub" id="detDni" style="color:var(--muted); font-size:13px; margin-bottom:4px;"></div>
-    <div id="detBadge" style="margin-bottom:10px;"></div>
+    <div class="det-sub" id="detDni"></div>
+    <div class="det-fechas" id="detBadge"></div>
 
-    <div class="field"><label>Notas</label><div id="detNotas" style="font-size:14px;"></div></div>
+    <div class="btn-row" id="detContacto" hidden>
+      <a class="btn ghost" id="btnLlamar">📞 Llamar</a>
+      <a class="btn ghost" id="btnWhatsapp" target="_blank" rel="noopener">💬 WhatsApp</a>
+    </div>
+
+    <div class="field" style="margin-top:14px;"><label>Notas</label><div class="det-notas" id="detNotas"></div></div>
 
     <div class="btn-row">
-      <button class="btn ghost" id="btnEditar">✏️ Editar datos</button>
+      <button class="btn ghost" id="btnEditar">✏️ Editar</button>
       <button class="btn ghost" id="btnMarcarPago">💰 Pagó</button>
       <button class="btn ghost" id="btnMarcarPerdido">🚫 Perdido</button>
+      <button class="btn ghost" id="btnReactivar" hidden>↩️ Volver a pendiente</button>
     </div>
 
     <div class="detail-section">
       <h3>Registrar nuevo llamado</h3>
       <div class="field">
-        <label>Resultado</label>
+        <label for="hist_resultado">Resultado</label>
         <select id="hist_resultado">
           <option value="no_contesta">No contesta</option>
           <option value="nueva_promesa">Nueva promesa de pago</option>
@@ -277,12 +369,12 @@
           <option value="otro">Otro</option>
         </select>
       </div>
-      <div class="field" id="campoNuevaFecha" style="display:none;">
-        <label>Nueva fecha de promesa</label>
+      <div class="field" id="campoNuevaFecha" hidden>
+        <label for="hist_nuevaFecha">Nueva fecha de promesa</label>
         <input type="date" id="hist_nuevaFecha">
       </div>
       <div class="field">
-        <label>Comentario (opcional)</label>
+        <label for="hist_comentario">Comentario (opcional)</label>
         <input type="text" id="hist_comentario">
       </div>
       <button class="btn primary" id="btnAgregarLlamado">Guardar llamado</button>
@@ -298,44 +390,78 @@
 <!-- Overlay: menu -->
 <div class="overlay" id="overlayMenu">
   <div class="sheet">
-    <button class="close" data-close>✕</button>
+    <button class="close" data-close aria-label="Cerrar">✕</button>
     <h2>Opciones</h2>
+    <div class="hint" id="lastBackup" style="margin-bottom:6px;"></div>
     <button class="btn ghost" id="btnExportar">⬇️ Exportar backup (JSON)</button>
     <button class="btn ghost" id="btnImportar">⬆️ Importar backup</button>
-    <input type="file" id="fileImportar" accept=".json" style="display:none;">
+    <input type="file" id="fileImportar" accept=".json,application/json" hidden>
     <button class="btn danger" id="btnBorrarTodo">🗑️ Borrar todos los clientes</button>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span id="toastMsg"></span><button id="toastUndo" hidden>Deshacer</button></div>
 
 <script>
 (function(){
   const STORAGE_KEY = 'cartera_clientes_v1';
+  const BACKUP_KEY = 'cartera_ultimo_backup';
+  const ESTADOS = ['pendiente','agendado','pagado','perdido'];
   let clientes = [];
   let currentFilter = 'activos';
   let currentDetailId = null;
+  let undoSnap = null;
+  let toastTimer = null;
 
+  const $ = id => document.getElementById(id);
+
+  // ---- Storage ----
+  function normalizar(x){
+    const fechaPromesa = x.fechaPromesa || '';
+    return {
+      id: x.id || uid(),
+      dni: String(x.dni || ''),
+      nombre: String(x.nombre || ''),
+      telefono: String(x.telefono || ''),
+      monto: (x.monto === '' || x.monto == null || isNaN(Number(x.monto))) ? '' : Number(x.monto),
+      fechaPromesa,
+      fechaLlamado: x.fechaLlamado || fechaPromesa || todayStr(),
+      notas: String(x.notas || ''),
+      estado: ESTADOS.includes(x.estado) ? x.estado : 'pendiente',
+      historial: Array.isArray(x.historial) ? x.historial : [],
+      creado: x.creado || todayStr()
+    };
+  }
+  function normalizarLista(data){
+    return data.filter(x => x && typeof x === 'object').map(normalizar);
+  }
   function load(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      clientes = raw ? JSON.parse(raw) : [];
+      const data = raw ? JSON.parse(raw) : [];
+      clientes = Array.isArray(data) ? normalizarLista(data) : [];
     }catch(e){ clientes = []; }
   }
   function save(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
+    }catch(e){
+      alert('No se pudieron guardar los datos en este navegador.');
+    }
   }
+
+  // ---- Helpers ----
   function uid(){
     return 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
   }
-  function todayStr(){
-    const d = new Date();
+  function ymd(d){
     return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   }
+  function todayStr(){ return ymd(new Date()); }
   function addDays(dateStr, days){
     const d = new Date(dateStr + 'T00:00:00');
     d.setDate(d.getDate() + days);
-    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    return ymd(d);
   }
   function daysBetween(a, b){
     const da = new Date(a + 'T00:00:00');
@@ -343,67 +469,101 @@
     return Math.round((db - da) / 86400000);
   }
   function fmtDate(dateStr){
-    if(!dateStr) return '';
+    if(!dateStr) return '—';
     const [y,m,d] = dateStr.split('-');
     return d+'/'+m+'/'+y;
   }
-  function toast(msg){
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 1800);
+  function fmtMoney(m){
+    if(m === '' || m == null) return '';
+    return '$ ' + Number(m).toLocaleString('es-AR', {maximumFractionDigits:2});
+  }
+  function iniciales(nombre){
+    return nombre.trim().split(/\s+/).slice(0,2).map(w => w[0] || '').join('').toUpperCase() || '?';
+  }
+  function soloDigitos(s){ return (s || '').replace(/\D/g, ''); }
+  function whatsappNumero(tel){
+    let d = soloDigitos(tel).replace(/^0+/, '');
+    if(d.length <= 10) d = '549' + d; // número local argentino sin código de país
+    return d;
+  }
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
-  // ---- Urgency classification for active ('pendiente') clients ----
+  // ---- Toast + deshacer ----
+  function snapshot(){ undoSnap = JSON.stringify(clientes); }
+  function toast(msg, conDeshacer){
+    $('toastMsg').textContent = msg;
+    $('toastUndo').hidden = !conDeshacer;
+    if(!conDeshacer) undoSnap = null;
+    const t = $('toast');
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>t.classList.remove('show'), conDeshacer ? 6000 : 1800);
+  }
+  $('toastUndo').addEventListener('click', ()=>{
+    if(!undoSnap) return;
+    clientes = JSON.parse(undoSnap);
+    save();
+    render();
+    if(currentDetailId) renderDetail();
+    toast('Cambio deshecho');
+  });
+
+  // ---- Urgencia de los clientes pendientes ----
   function urgencyInfo(cliente){
     if(cliente.estado !== 'pendiente'){
       return {key: cliente.estado, label: labelEstado(cliente.estado), cls: cliente.estado};
     }
-    const hoy = todayStr();
-    const diff = daysBetween(hoy, cliente.fechaLlamado);
-    if(diff < 0) return {key:'vencido', label:'Vencido '+Math.abs(diff)+'d', cls:'vencido'};
+    const diff = daysBetween(todayStr(), cliente.fechaLlamado);
+    if(diff < 0) return {key:'vencido', label:'Vencido hace '+Math.abs(diff)+'d', cls:'vencido'};
     if(diff === 0) return {key:'hoy', label:'Llamar hoy', cls:'hoy'};
-    if(diff <= 7) return {key:'semana', label:'En '+diff+'d', cls:'semana'};
+    if(diff <= 7) return {key:'semana', label:'En '+diff+(diff===1?' día':' días'), cls:'semana'};
     return {key:'futuro', label:fmtDate(cliente.fechaLlamado), cls:'futuro'};
   }
   function labelEstado(e){
     return {pagado:'Pagó', perdido:'Perdido', agendado:'Agendado'}[e] || e;
   }
 
+  // "Llamar hoy" incluye los vencidos: son todos los que hay que llamar ya.
   function matchesFilter(cliente, filter){
-    const info = urgencyInfo(cliente);
-    if(filter === 'todos') return true;
-    if(filter === 'activos') return cliente.estado === 'pendiente';
-    if(filter === 'hoy') return cliente.estado==='pendiente' && (info.key==='hoy');
-    if(filter === 'vencido') return cliente.estado==='pendiente' && info.key==='vencido';
-    if(filter === 'semana') return cliente.estado==='pendiente' && (info.key==='hoy'||info.key==='vencido'||info.key==='semana');
-    if(filter === 'agendado') return cliente.estado === 'agendado';
-    if(filter === 'pagado') return cliente.estado === 'pagado';
-    if(filter === 'perdido') return cliente.estado === 'perdido';
-    return true;
+    const pend = cliente.estado === 'pendiente';
+    const key = urgencyInfo(cliente).key;
+    switch(filter){
+      case 'activos': return pend;
+      case 'hoy': return pend && (key==='hoy' || key==='vencido');
+      case 'vencido': return pend && key==='vencido';
+      case 'semana': return pend && (key==='hoy' || key==='vencido' || key==='semana');
+      case 'agendado': case 'pagado': case 'perdido': return cliente.estado === filter;
+      default: return true;
+    }
+  }
+  function setFilter(f){
+    currentFilter = f;
+    render();
   }
 
   function render(){
-    // summary counts (over active clients only)
-    const hoy = todayStr();
-    let cntHoy=0, cntSemana=0, cntActivos=0;
-    clientes.forEach(c=>{
-      if(c.estado !== 'pendiente') return;
-      cntActivos++;
-      const diff = daysBetween(hoy, c.fechaLlamado);
-      if(diff <= 0) cntHoy++;
-      if(diff <= 7) cntSemana++;
-    });
-    document.getElementById('cntHoy').textContent = cntHoy;
-    document.getElementById('cntSemana').textContent = cntSemana;
-    document.getElementById('cntActivos').textContent = cntActivos;
+    const pendientes = clientes.filter(c => c.estado === 'pendiente');
+    $('cntHoy').textContent = pendientes.filter(c => matchesFilter(c,'hoy')).length;
+    $('cntSemana').textContent = pendientes.filter(c => matchesFilter(c,'semana')).length;
+    $('cntActivos').textContent = pendientes.length;
 
-    const search = document.getElementById('searchBox').value.trim().toLowerCase();
+    document.querySelectorAll('.summary .card, .chip').forEach(el=>{
+      el.classList.toggle('active', el.dataset.filter === currentFilter);
+    });
+
+    const search = $('searchBox').value.trim().toLowerCase();
     let list = clientes.filter(c => matchesFilter(c, currentFilter));
     if(search){
-      list = list.filter(c => c.dni.toLowerCase().includes(search) || c.nombre.toLowerCase().includes(search));
+      const digits = soloDigitos(search);
+      list = list.filter(c =>
+        c.dni.toLowerCase().includes(search) ||
+        c.nombre.toLowerCase().includes(search) ||
+        (digits && soloDigitos(c.telefono).includes(digits))
+      );
     }
-    // sort: pendientes by fechaLlamado asc; others after, by fechaPromesa desc
+    // pendientes primero por fecha de llamado; el resto por promesa más reciente
     list.sort((a,b)=>{
       if(a.estado==='pendiente' && b.estado==='pendiente'){
         return a.fechaLlamado.localeCompare(b.fechaLlamado);
@@ -413,36 +573,32 @@
       return (b.fechaPromesa||'').localeCompare(a.fechaPromesa||'');
     });
 
-    const listEl = document.getElementById('list');
+    const listEl = $('list');
     listEl.innerHTML = '';
     if(list.length === 0){
-      listEl.innerHTML = '<div class="empty">No hay clientes en esta vista.<br>Tocá el botón + para agregar uno.</div>';
+      listEl.innerHTML = clientes.length === 0
+        ? '<div class="empty"><div class="big">📋</div>Todavía no cargaste clientes.<br>Tocá el botón + para agregar el primero.</div>'
+        : '<div class="empty"><div class="big">✓</div>No hay clientes en esta vista.</div>';
       return;
     }
     list.forEach(c=>{
       const info = urgencyInfo(c);
+      const urgClass = c.estado==='pendiente' ? 'urg-'+info.key : 'urg-done';
       const div = document.createElement('div');
-      let urgClass = 'urg-futuro';
-      if(c.estado==='pendiente'){
-        if(info.key==='hoy') urgClass='urg-hoy';
-        else if(info.key==='vencido') urgClass='urg-vencido';
-        else if(info.key==='semana') urgClass='urg-semana';
-        else urgClass='urg-futuro';
-      } else {
-        urgClass='urg-done';
-      }
       div.className = 'client ' + urgClass;
       div.innerHTML = `
         <div class="client-top">
-          <div>
+          <div class="avatar">${escapeHtml(iniciales(c.nombre))}</div>
+          <div class="client-id">
             <div class="client-name">${escapeHtml(c.nombre)}</div>
             <div class="client-dni">DNI ${escapeHtml(c.dni)}</div>
           </div>
           <div class="badge ${info.cls}">${escapeHtml(info.label)}</div>
         </div>
         <div class="client-meta">
-          <span>Promesa: ${fmtDate(c.fechaPromesa)}</span>
-          <span>Llamar: ${fmtDate(c.fechaLlamado)}</span>
+          <span>Promesa <b>${fmtDate(c.fechaPromesa)}</b></span>
+          <span>Llamar <b>${fmtDate(c.fechaLlamado)}</b></span>
+          ${c.monto !== '' ? `<span>Debe <b>${escapeHtml(fmtMoney(c.monto))}</b></span>` : ''}
         </div>
         ${c.notas ? `<div class="client-notas">${escapeHtml(c.notas)}</div>` : ''}
       `;
@@ -451,59 +607,65 @@
     });
   }
 
-  function escapeHtml(s){
-    return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
   // ---- Form (nuevo/editar) ----
-  const overlayForm = document.getElementById('overlayForm');
-  const overlayDetail = document.getElementById('overlayDetail');
-  const overlayMenu = document.getElementById('overlayMenu');
+  const overlayForm = $('overlayForm');
+  const overlayDetail = $('overlayDetail');
+  const overlayMenu = $('overlayMenu');
 
   function openForm(cliente){
-    document.getElementById('formTitle').textContent = cliente ? 'Editar cliente' : 'Nuevo cliente';
-    document.getElementById('f_id').value = cliente ? cliente.id : '';
-    document.getElementById('f_dni').value = cliente ? cliente.dni : '';
-    document.getElementById('f_nombre').value = cliente ? cliente.nombre : '';
-    document.getElementById('f_fechaPromesa').value = cliente ? cliente.fechaPromesa : '';
-    document.getElementById('f_fechaLlamado').value = cliente ? cliente.fechaLlamado : '';
-    document.getElementById('f_notas').value = cliente ? (cliente.notas||'') : '';
-    document.getElementById('btnEliminar').style.display = cliente ? 'block' : 'none';
+    $('formTitle').textContent = cliente ? 'Editar cliente' : 'Nuevo cliente';
+    $('f_id').value = cliente ? cliente.id : '';
+    $('f_dni').value = cliente ? cliente.dni : '';
+    $('f_nombre').value = cliente ? cliente.nombre : '';
+    $('f_telefono').value = cliente ? cliente.telefono : '';
+    $('f_monto').value = cliente ? cliente.monto : '';
+    $('f_fechaPromesa').value = cliente ? cliente.fechaPromesa : '';
+    $('f_fechaLlamado').value = cliente ? cliente.fechaLlamado : '';
+    $('f_notas').value = cliente ? cliente.notas : '';
+    $('btnEliminar').hidden = !cliente;
+    // La fecha de llamado se recalcula sola salvo que ya haya sido ajustada a mano.
+    const auto = !cliente || !cliente.fechaPromesa || cliente.fechaLlamado === addDays(cliente.fechaPromesa, -5);
+    $('f_fechaLlamado').dataset.auto = auto ? 'true' : 'false';
     overlayForm.classList.add('show');
   }
   function closeForm(){ overlayForm.classList.remove('show'); }
 
-  document.getElementById('btnNuevo').addEventListener('click', ()=>openForm(null));
+  $('btnNuevo').addEventListener('click', ()=>openForm(null));
 
-  document.getElementById('f_fechaPromesa').addEventListener('change', (e)=>{
-    const fl = document.getElementById('f_fechaLlamado');
-    if(!fl.value || fl.dataset.auto !== 'false'){
+  $('f_fechaPromesa').addEventListener('change', (e)=>{
+    const fl = $('f_fechaLlamado');
+    if(e.target.value && (!fl.value || fl.dataset.auto === 'true')){
       fl.value = addDays(e.target.value, -5);
       fl.dataset.auto = 'true';
     }
   });
-  document.getElementById('f_fechaLlamado').addEventListener('input', ()=>{
-    document.getElementById('f_fechaLlamado').dataset.auto = 'false';
+  $('f_fechaLlamado').addEventListener('input', (e)=>{
+    e.target.dataset.auto = e.target.value ? 'false' : 'true';
   });
 
-  document.getElementById('clientForm').addEventListener('submit', (e)=>{
+  $('clientForm').addEventListener('submit', (e)=>{
     e.preventDefault();
-    const id = document.getElementById('f_id').value;
-    const dni = document.getElementById('f_dni').value.trim();
-    const nombre = document.getElementById('f_nombre').value.trim();
-    const fechaPromesa = document.getElementById('f_fechaPromesa').value;
-    const fechaLlamado = document.getElementById('f_fechaLlamado').value;
-    const notas = document.getElementById('f_notas').value.trim();
+    const id = $('f_id').value;
+    const montoRaw = $('f_monto').value.trim();
+    const datos = {
+      dni: $('f_dni').value.trim(),
+      nombre: $('f_nombre').value.trim(),
+      telefono: $('f_telefono').value.trim(),
+      monto: montoRaw === '' ? '' : Number(montoRaw),
+      fechaPromesa: $('f_fechaPromesa').value,
+      fechaLlamado: $('f_fechaLlamado').value,
+      notas: $('f_notas').value.trim()
+    };
+
+    const repetido = clientes.find(x => x.id !== id && soloDigitos(x.dni) === soloDigitos(datos.dni) && soloDigitos(datos.dni));
+    if(repetido && !confirm('Ya tenés cargado un cliente con ese DNI: '+repetido.nombre+'.\n¿Guardar igual?')) return;
 
     if(id){
       const c = clientes.find(x=>x.id===id);
-      Object.assign(c, {dni, nombre, fechaPromesa, fechaLlamado, notas});
+      if(c) Object.assign(c, datos);
       toast('Cliente actualizado');
     } else {
-      clientes.push({
-        id: uid(), dni, nombre, fechaPromesa, fechaLlamado, notas,
-        estado: 'pendiente', historial: [], creado: todayStr()
-      });
+      clientes.push(normalizar(Object.assign({id: uid()}, datos)));
       toast('Cliente agregado');
     }
     save();
@@ -511,18 +673,19 @@
     render();
   });
 
-  document.getElementById('btnEliminar').addEventListener('click', ()=>{
-    const id = document.getElementById('f_id').value;
-    if(confirm('¿Eliminar este cliente definitivamente?')){
+  $('btnEliminar').addEventListener('click', ()=>{
+    const id = $('f_id').value;
+    if(confirm('¿Eliminar este cliente?')){
+      snapshot();
       clientes = clientes.filter(c=>c.id!==id);
       save();
       closeForm();
       render();
-      toast('Cliente eliminado');
+      toast('Cliente eliminado', true);
     }
   });
 
-  // ---- Detail ----
+  // ---- Detalle ----
   function openDetail(id){
     currentDetailId = id;
     renderDetail();
@@ -533,20 +696,33 @@
   function renderDetail(){
     const c = clientes.find(x=>x.id===currentDetailId);
     if(!c) return closeDetail();
-    document.getElementById('detNombre').textContent = c.nombre;
-    document.getElementById('detDni').textContent = 'DNI ' + c.dni;
+    $('detNombre').textContent = c.nombre;
+    $('detDni').textContent = 'DNI ' + c.dni + (c.telefono ? ' · ' + c.telefono : '');
     const info = urgencyInfo(c);
-    document.getElementById('detBadge').innerHTML = `<span class="badge ${info.cls}">${escapeHtml(info.label)}</span>
-      <span style="font-size:12px;color:var(--muted);margin-left:8px;">Promesa: ${fmtDate(c.fechaPromesa)} · Llamar: ${fmtDate(c.fechaLlamado)}</span>`;
-    document.getElementById('detNotas').textContent = c.notas || '(sin notas)';
+    $('detBadge').innerHTML = `<span class="badge ${info.cls}">${escapeHtml(info.label)}</span>
+      <span>Promesa ${fmtDate(c.fechaPromesa)}</span><span>Llamar ${fmtDate(c.fechaLlamado)}</span>
+      ${c.monto !== '' ? `<span>Debe ${escapeHtml(fmtMoney(c.monto))}</span>` : ''}`;
+    $('detNotas').textContent = c.notas || '(sin notas)';
 
-    const hist = document.getElementById('detHistorial');
-    if(!c.historial || c.historial.length===0){
+    const tel = soloDigitos(c.telefono);
+    $('detContacto').hidden = !tel;
+    if(tel){
+      $('btnLlamar').href = 'tel:' + tel;
+      $('btnWhatsapp').href = 'https://wa.me/' + whatsappNumero(c.telefono);
+    }
+
+    const pend = c.estado === 'pendiente';
+    $('btnMarcarPago').hidden = !pend;
+    $('btnMarcarPerdido').hidden = !pend;
+    $('btnReactivar').hidden = pend;
+
+    const hist = $('detHistorial');
+    if(c.historial.length===0){
       hist.innerHTML = '<div class="empty" style="padding:14px 0;">Todavía no hay llamados registrados.</div>';
     } else {
       hist.innerHTML = c.historial.slice().reverse().map(h=>`
         <div class="hist-item">
-          <div class="hd"><span>${fmtDate(h.fecha)}</span><span>${escapeHtml(resultadoLabel(h.resultado))}</span></div>
+          <div class="hd"><b>${escapeHtml(resultadoLabel(h.resultado))}</b><span>${fmtDate(h.fecha)}</span></div>
           ${h.comentario ? escapeHtml(h.comentario) : ''}
         </div>
       `).join('');
@@ -555,30 +731,42 @@
   function resultadoLabel(r){
     return {
       no_contesta:'No contesta', nueva_promesa:'Nueva promesa', reagendo:'Reagendó',
-      agendado_sistema:'Agendado en sistema', pago:'Pagó', no_pago:'No va a pagar', otro:'Otro'
+      agendado_sistema:'Agendado en sistema', pago:'Pagó', no_pago:'No va a pagar',
+      reactivado:'Volvió a pendiente', otro:'Otro'
     }[r] || r;
   }
 
-  document.getElementById('hist_resultado').addEventListener('change', (e)=>{
-    document.getElementById('campoNuevaFecha').style.display = (e.target.value==='nueva_promesa') ? 'block' : 'none';
+  $('hist_resultado').addEventListener('change', (e)=>{
+    $('campoNuevaFecha').hidden = e.target.value !== 'nueva_promesa';
   });
 
-  document.getElementById('btnAgregarLlamado').addEventListener('click', ()=>{
+  $('btnAgregarLlamado').addEventListener('click', ()=>{
     const c = clientes.find(x=>x.id===currentDetailId);
     if(!c) return;
-    const resultado = document.getElementById('hist_resultado').value;
-    const comentario = document.getElementById('hist_comentario').value.trim();
-    const nuevaFecha = document.getElementById('hist_nuevaFecha').value;
+    const resultado = $('hist_resultado').value;
+    const comentario = $('hist_comentario').value.trim();
+    const nuevaFecha = $('hist_nuevaFecha').value;
 
-    c.historial = c.historial || [];
-    c.historial.push({fecha: todayStr(), resultado, comentario});
+    if(resultado === 'nueva_promesa' && !nuevaFecha){
+      alert('Elegí la nueva fecha de promesa.');
+      return;
+    }
 
-    if(resultado === 'nueva_promesa' && nuevaFecha){
+    snapshot();
+    const hoy = todayStr();
+    let detalle = comentario;
+    if(resultado === 'nueva_promesa'){
+      detalle = 'Paga el ' + fmtDate(nuevaFecha) + (comentario ? ' — ' + comentario : '');
+    }
+    c.historial.push({fecha: hoy, resultado, comentario: detalle});
+
+    if(resultado === 'nueva_promesa'){
       c.fechaPromesa = nuevaFecha;
       c.fechaLlamado = addDays(nuevaFecha, -5);
+      c.estado = 'pendiente';
     } else if(resultado === 'reagendo'){
-      // keep same fechaPromesa, but push next-call date out a few days so it doesn't show as due again immediately
-      c.fechaLlamado = addDays(todayStr(), 3);
+      // misma promesa: se corre el próximo llamado unos días para que no aparezca de nuevo enseguida
+      c.fechaLlamado = addDays(hoy, 3);
     } else if(resultado === 'agendado_sistema'){
       c.estado = 'agendado';
     } else if(resultado === 'pago'){
@@ -586,126 +774,128 @@
     } else if(resultado === 'no_pago'){
       c.estado = 'perdido';
     } else if(resultado === 'no_contesta'){
-      c.fechaLlamado = addDays(todayStr(), 1);
+      c.fechaLlamado = addDays(hoy, 1);
     }
 
-    document.getElementById('hist_comentario').value = '';
-    document.getElementById('hist_nuevaFecha').value = '';
-    document.getElementById('campoNuevaFecha').style.display = 'none';
-    document.getElementById('hist_resultado').value = 'no_contesta';
+    $('hist_comentario').value = '';
+    $('hist_nuevaFecha').value = '';
+    $('campoNuevaFecha').hidden = true;
+    $('hist_resultado').value = 'no_contesta';
 
     save();
     renderDetail();
     render();
-    toast('Llamado registrado');
+    toast('Llamado registrado', true);
   });
 
-  document.getElementById('btnEditar').addEventListener('click', ()=>{
+  $('btnEditar').addEventListener('click', ()=>{
     const c = clientes.find(x=>x.id===currentDetailId);
+    if(!c) return;
     closeDetail();
     openForm(c);
   });
-  document.getElementById('btnMarcarPago').addEventListener('click', ()=>{
+
+  function cambiarEstado(estado, resultado, mensaje){
     const c = clientes.find(x=>x.id===currentDetailId);
-    c.estado = 'pagado';
-    c.historial.push({fecha:todayStr(), resultado:'pago', comentario:''});
-    save(); renderDetail(); render(); toast('Marcado como pagado');
-  });
-  document.getElementById('btnMarcarPerdido').addEventListener('click', ()=>{
-    const c = clientes.find(x=>x.id===currentDetailId);
-    c.estado = 'perdido';
-    c.historial.push({fecha:todayStr(), resultado:'no_pago', comentario:''});
-    save(); renderDetail(); render(); toast('Marcado como perdido');
+    if(!c) return;
+    snapshot();
+    c.estado = estado;
+    c.historial.push({fecha: todayStr(), resultado, comentario: ''});
+    save(); renderDetail(); render();
+    toast(mensaje, true);
+  }
+  $('btnMarcarPago').addEventListener('click', ()=>cambiarEstado('pagado', 'pago', 'Marcado como pagado'));
+  $('btnMarcarPerdido').addEventListener('click', ()=>cambiarEstado('perdido', 'no_pago', 'Marcado como perdido'));
+  $('btnReactivar').addEventListener('click', ()=>cambiarEstado('pendiente', 'reactivado', 'Volvió a pendiente'));
+
+  // ---- Filtros / búsqueda ----
+  $('searchBox').addEventListener('input', render);
+  document.querySelectorAll('.summary .card, .chip').forEach(el=>{
+    el.addEventListener('click', ()=>setFilter(el.dataset.filter));
   });
 
-  // ---- Filters / search ----
-  document.getElementById('filterSelect').addEventListener('change', (e)=>{
-    currentFilter = e.target.value;
-    render();
+  // ---- Menú / backup ----
+  function renderLastBackup(){
+    let last = null;
+    try{ last = localStorage.getItem(BACKUP_KEY); }catch(e){}
+    $('lastBackup').textContent = last
+      ? 'Último backup exportado: ' + fmtDate(last) + '.'
+      : 'Los datos se guardan solo en este navegador. Exportá un backup cada tanto para no perderlos.';
+  }
+  $('btnMenu').addEventListener('click', ()=>{
+    renderLastBackup();
+    overlayMenu.classList.add('show');
   });
-  document.getElementById('searchBox').addEventListener('input', render);
-  document.querySelectorAll('.summary .card').forEach(card=>{
-    card.addEventListener('click', ()=>{
-      const f = card.dataset.filter;
-      currentFilter = f;
-      document.getElementById('filterSelect').value = f;
-      render();
-    });
-  });
-
-  // ---- Menu / backup ----
-  document.getElementById('btnMenu').addEventListener('click', ()=>overlayMenu.classList.add('show'));
-  document.getElementById('btnExportar').addEventListener('click', async ()=>{
-    const data = JSON.stringify(clientes, null, 2);
+  $('btnExportar').addEventListener('click', ()=>{
+    if(clientes.length === 0){ toast('No hay clientes para exportar'); return; }
     try{
-      const downloads = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
-      if(downloads){
-        await downloads.save({filename: 'cartera_clientes_backup_'+todayStr()+'.json', data});
-        toast('Backup descargado');
-      } else {
-        // Fallback: show the data so it can be copied manually.
-        const win = window.open('', '_blank');
-        if(win){
-          win.document.write('<pre style="white-space:pre-wrap;font-family:monospace;padding:16px;">'+escapeHtml(data)+'</pre>');
-        } else {
-          alert('No se pudo descargar. Copiá este texto a mano:\n\n'+data.slice(0,500)+(data.length>500?'...':''));
-        }
-      }
+      const blob = new Blob([JSON.stringify(clientes, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cartera_clientes_backup_' + todayStr() + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 2000);
+      try{ localStorage.setItem(BACKUP_KEY, todayStr()); }catch(e){}
+      renderLastBackup();
+      toast('Backup descargado');
     }catch(e){
-      alert('No se pudo generar el backup: '+e.message);
+      alert('No se pudo generar el backup: ' + e.message);
     }
   });
-  document.getElementById('btnImportar').addEventListener('click', ()=>{
-    document.getElementById('fileImportar').click();
-  });
-  document.getElementById('fileImportar').addEventListener('change', (e)=>{
+  $('btnImportar').addEventListener('click', ()=>$('fileImportar').click());
+  $('fileImportar').addEventListener('change', (e)=>{
     const file = e.target.files[0];
+    e.target.value = '';
     if(!file) return;
     const reader = new FileReader();
     reader.onload = (ev)=>{
-      try{
-        const data = JSON.parse(ev.target.result);
-        if(Array.isArray(data)){
-          if(confirm('Esto va a reemplazar tu cartera actual por el backup importado. ¿Continuar?')){
-            clientes = data;
-            save();
-            render();
-            toast('Backup importado');
-            overlayMenu.classList.remove('show');
-          }
-        } else {
-          alert('El archivo no tiene el formato esperado.');
-        }
-      }catch(err){
-        alert('No se pudo leer el archivo.');
+      let data;
+      try{ data = JSON.parse(ev.target.result); }
+      catch(err){ alert('No se pudo leer el archivo.'); return; }
+      if(!Array.isArray(data)){ alert('El archivo no tiene el formato esperado.'); return; }
+      if(confirm('Esto va a reemplazar tu cartera actual por el backup importado ('+data.length+' clientes). ¿Continuar?')){
+        snapshot();
+        clientes = normalizarLista(data);
+        save();
+        render();
+        overlayMenu.classList.remove('show');
+        toast('Backup importado', true);
       }
     };
     reader.readAsText(file);
   });
-  document.getElementById('btnBorrarTodo').addEventListener('click', ()=>{
+  $('btnBorrarTodo').addEventListener('click', ()=>{
+    if(clientes.length === 0){ toast('La cartera ya está vacía'); return; }
     if(confirm('Esto borra TODOS los clientes guardados. ¿Estás seguro?')){
+      snapshot();
       clientes = [];
       save();
       render();
       overlayMenu.classList.remove('show');
-      toast('Cartera borrada');
+      toast('Cartera borrada', true);
     }
   });
 
-  // ---- Close overlays ----
+  // ---- Cerrar overlays ----
+  function cerrarOverlay(ov){
+    ov.classList.remove('show');
+    if(ov === overlayDetail) currentDetailId = null;
+  }
   document.querySelectorAll('[data-close]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.target.closest('.overlay').classList.remove('show');
-    });
+    btn.addEventListener('click', ()=>cerrarOverlay(btn.closest('.overlay')));
   });
   document.querySelectorAll('.overlay').forEach(ov=>{
-    ov.addEventListener('click', (e)=>{
-      if(e.target === ov) ov.classList.remove('show');
-    });
+    ov.addEventListener('click', (e)=>{ if(e.target === ov) cerrarOverlay(ov); });
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') document.querySelectorAll('.overlay.show').forEach(cerrarOverlay);
   });
 
-  // init default fechaLlamado field auto flag
-  document.getElementById('f_fechaLlamado').dataset.auto = 'true';
+  const hoyTxt = new Date().toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
+  $('fechaHoy').textContent = hoyTxt.charAt(0).toUpperCase() + hoyTxt.slice(1);
 
   load();
   render();
