@@ -1,21 +1,21 @@
 # Mi Cartera de Clientes
 
-App web simple para llevar el control de llamados a clientes (gestión de cobranzas / mora temprana).
+App web para llevar el control de llamados a clientes con promesa de pago (gestión de cobranzas / mora temprana).
 
-## Qué hace
+## Cómo funciona
 
-- Registra cada cliente con DNI, nombre, teléfono y monto adeudado (opcionales) y la fecha en que prometió pagar.
-- Calcula automáticamente la fecha para volver a llamarlo (5 días antes de la promesa, ajustable), para no perderlo de vista aunque el sistema de la empresa solo permita agendar a 5 días vista.
-- Muestra alertas de "llamar hoy" (incluye vencidos), "vencidos" y "esta semana".
-- Botones para llamar o escribir por WhatsApp al cliente desde su ficha.
-- Los cambios de estado, llamados y borrados se pueden deshacer, y un cliente cerrado puede volver a pendiente.
-- Guarda un historial de cada llamado (no contesta, nueva promesa, reagendó, agendado en el sistema, pagó, no va a pagar).
-- Permite exportar/importar un backup en JSON.
+- **Alta de cliente:** nombre y apellido, DNI y fecha de promesa (teléfono, monto y notas son opcionales). El horario del llamado se toma de la hora en que cargás la ficha (editable).
+- **Promesa normal:** se elige de un desplegable con el día de carga y los 4 días hábiles siguientes. La app agenda un llamado para **verificar el pago** el día hábil siguiente al vencimiento.
+- **Promesa negociada:** si el cliente da una fecha posterior, se carga igual con "Otra fecha". La app agenda un llamado **5 días hábiles antes** para registrarla en el sistema; al marcarla como registrada, pasa a agendarse la verificación del pago.
+- **Días hábiles:** se descuentan sábados, domingos y feriados nacionales de Argentina (2026–2027). Desde Opciones se pueden agregar feriados extra.
+- **Hoy:** llamados del día ordenados por horario, atrasados y los del próximo día hábil.
+- **Calendario:** vista mensual con la cantidad de llamados por día; al tocar un día se ve el detalle.
+- **Resultado de cada llamado:** registrada, pagó, no contesta (pasa al próximo día hábil), nueva promesa o no va a pagar. Todo queda en el historial y se puede deshacer.
 
 ## Cómo se guardan los datos
 
-Los datos se guardan en el `localStorage` del navegador donde se abre la app (no hay backend ni base de datos). Es ideal para uso personal desde un solo navegador/dispositivo. Usar el botón de exportar backup para no perder la información si se cambia de navegador o PC.
+Los datos se guardan en el `localStorage` del navegador donde se abre la app (no hay backend). Usá el botón de exportar backup para no perder la información si cambiás de navegador o PC.
 
 ## Uso
 
-Abrir `index.html` en el navegador, o publicarlo con GitHub Pages.
+Abrir `index.html` en el navegador, o usar la versión publicada en GitHub Pages: https://tomashonor.github.io/control-llamados/

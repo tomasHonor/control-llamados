@@ -7,174 +7,171 @@
 <style>
   :root{
     color-scheme:dark;
-    --bg:#0d0f14;
-    --panel:#161920;
-    --panel2:#1e222b;
-    --hover:#262b36;
-    --border:#2a2f3a;
-    --text:#eceef2;
-    --muted:#98a1b2;
-    --accent:#5b93ff;
-    --accent2:#4279e6;
-    --on-accent:#ffffff;
-    --red:#f26464;
-    --red-strong:#d63a3a;
-    --red-bg:#2c1617;
-    --amber:#f2a93b;
-    --amber-bg:#2b2314;
-    --green:#3ecf8e;
-    --green-bg:#12291f;
-    --blue:#6ab0f2;
-    --blue-bg:#14212c;
+    --bg:#0d0f14; --panel:#161920; --panel2:#1e222b; --hover:#262b36; --border:#2a2f3a;
+    --text:#eceef2; --muted:#98a1b2; --accent:#5b93ff; --accent2:#4279e6; --on-accent:#fff;
+    --red:#f26464; --red-strong:#d63a3a; --red-bg:#2c1617;
+    --amber:#f2a93b; --amber-bg:#2b2314;
+    --green:#3ecf8e; --green-bg:#12291f;
+    --blue:#6ab0f2; --blue-bg:#14212c;
+    --violet:#b69cff; --violet-bg:#221b33;
     --grey-bg:#20242d;
-    --radius:16px;
-    --shadow:0 10px 30px rgba(0,0,0,0.45);
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,0.45);
   }
   @media (prefers-color-scheme: light){
     :root{
       color-scheme:light;
-      --bg:#f3f4f8;
-      --panel:#ffffff;
-      --panel2:#f1f3f7;
-      --hover:#e6e9f0;
-      --border:#dde1e9;
-      --text:#171a21;
-      --muted:#667085;
-      --accent:#2f6fed;
-      --accent2:#2259cc;
-      --red:#d92d20;
-      --red-strong:#b42318;
-      --red-bg:#fde9e7;
-      --amber:#a86200;
-      --amber-bg:#fdf0d8;
-      --green:#0f7a56;
-      --green-bg:#dcf5ea;
-      --blue:#1d6fb8;
-      --blue-bg:#e1effb;
-      --grey-bg:#eceef3;
-      --shadow:0 10px 30px rgba(20,30,60,0.14);
+      --bg:#f3f4f8; --panel:#fff; --panel2:#f1f3f7; --hover:#e6e9f0; --border:#dde1e9;
+      --text:#171a21; --muted:#667085; --accent:#2f6fed; --accent2:#2259cc;
+      --red:#d92d20; --red-strong:#b42318; --red-bg:#fde9e7;
+      --amber:#a86200; --amber-bg:#fdf0d8;
+      --green:#0f7a56; --green-bg:#dcf5ea;
+      --blue:#1d6fb8; --blue-bg:#e1effb;
+      --violet:#6941c6; --violet-bg:#efe9fd;
+      --grey-bg:#eceef3; --shadow:0 10px 30px rgba(20,30,60,0.14);
     }
   }
   *{box-sizing:border-box;}
   [hidden]{display:none !important;}
   body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-    -webkit-tap-highlight-color:transparent;
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); min-height:100vh;
+    -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
   }
-  button, input, select, textarea{font-family:inherit;}
+  button,input,select,textarea{font-family:inherit;}
   :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
 
-  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 110px;}
-  header{
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:18px; gap:10px;
-  }
-  header h1{font-size:22px;margin:0;font-weight:800;letter-spacing:-0.02em;}
-  header .sub{font-size:13px;color:var(--muted);margin-top:3px;}
+  .wrap{max-width:720px; margin:0 auto; padding:20px 16px 110px;}
+  header{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:10px;}
+  header h1{font-size:22px; margin:0; font-weight:800; letter-spacing:-0.02em;}
+  header .sub{font-size:13px; color:var(--muted); margin-top:3px;}
   .icon-btn{
     background:var(--panel); border:1px solid var(--border); color:var(--text);
     border-radius:12px; width:42px; height:42px; font-size:18px; cursor:pointer;
-    transition:background .15s;
   }
   .icon-btn:hover{background:var(--hover);}
+
+  .tabs{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:4px; margin-bottom:16px;
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+  }
+  .tab{
+    background:none; border:none; color:var(--muted); font-size:14px; font-weight:700;
+    padding:10px 4px; border-radius:10px; cursor:pointer;
+  }
+  .tab.active{background:var(--panel2); color:var(--text); box-shadow:0 1px 0 var(--border) inset;}
+  .tab .n{
+    display:inline-block; min-width:20px; padding:1px 6px; margin-left:4px; border-radius:10px;
+    background:var(--red); color:#fff; font-size:11.5px;
+  }
 
   .summary{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;}
   .summary .card{
     background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
-    padding:14px 8px 12px; text-align:center; cursor:pointer; color:inherit;
-    transition:transform .1s, border-color .15s, background .15s;
+    padding:14px 8px 12px; text-align:center;
   }
-  .summary .card:hover{background:var(--panel2);}
-  .summary .card:active{transform:scale(0.97);}
-  .summary .card .num{font-size:28px; font-weight:800; line-height:1; letter-spacing:-0.02em;}
-  .summary .card .lbl{font-size:12px; color:var(--muted); margin-top:6px;}
-  .summary .card.hoy .num{color:var(--red);}
-  .summary .card.semana .num{color:var(--amber);}
-  .summary .card.total .num{color:var(--accent);}
-  .summary .card.hoy.active{border-color:var(--red); background:var(--red-bg);}
-  .summary .card.semana.active{border-color:var(--amber); background:var(--amber-bg);}
-  .summary .card.total.active{border-color:var(--accent);}
+  .summary .num{font-size:28px; font-weight:800; line-height:1;}
+  .summary .lbl{font-size:12px; color:var(--muted); margin-top:6px;}
+  .summary .c-red .num{color:var(--red);}
+  .summary .c-violet .num{color:var(--violet);}
+  .summary .c-blue .num{color:var(--accent);}
+
+  .section-title{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:18px 2px 10px; font-weight:700;}
+  .section-title:first-child{margin-top:0;}
 
   .search{
     width:100%; background:var(--panel); border:1px solid var(--border); color:var(--text);
     border-radius:12px; padding:12px 14px; font-size:15px; margin-bottom:10px;
   }
   .search::placeholder{color:var(--muted);}
-
-  .chips{
-    display:flex; gap:6px; overflow-x:auto; margin:0 -16px 14px; padding:2px 16px;
-    scrollbar-width:none;
-  }
+  .chips{display:flex; gap:6px; overflow-x:auto; margin:0 -16px 14px; padding:2px 16px; scrollbar-width:none;}
   .chips::-webkit-scrollbar{display:none;}
   .chip{
     flex:none; background:transparent; border:1px solid var(--border); color:var(--muted);
     border-radius:20px; padding:7px 13px; font-size:13px; font-weight:600; cursor:pointer;
-    transition:background .15s, color .15s;
   }
   .chip:hover{background:var(--panel2);}
   .chip.active{background:var(--text); border-color:var(--text); color:var(--bg);}
 
   .list{display:flex; flex-direction:column; gap:10px;}
-  .empty{text-align:center; color:var(--muted); padding:48px 10px; font-size:14px; line-height:1.6;}
+  .empty{text-align:center; color:var(--muted); padding:40px 10px; font-size:14px; line-height:1.6;}
   .empty .big{font-size:34px; margin-bottom:8px;}
 
-  .client{
+  .item{
+    display:flex; align-items:center; gap:12px;
     background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
-    padding:14px 14px 14px 18px; cursor:pointer; position:relative; overflow:hidden;
-    transition:background .15s, transform .1s;
+    padding:12px 14px 12px 18px; cursor:pointer; position:relative; overflow:hidden;
   }
-  .client:hover{background:var(--panel2);}
-  .client:active{transform:scale(0.99);}
-  .client::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px;}
-  .client.urg-hoy::before{background:var(--red);}
-  .client.urg-vencido::before{background:var(--red-strong);}
-  .client.urg-semana::before{background:var(--amber);}
-  .client.urg-futuro::before{background:var(--border);}
-  .client.urg-done::before{background:var(--green);}
-  .client.urg-done{opacity:.8;}
-
-  .client-top{display:flex; align-items:center; gap:12px;}
+  .item:hover{background:var(--panel2);}
+  .item::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--border);}
+  .item.k-atrasado::before{background:var(--red-strong);}
+  .item.k-hoy::before{background:var(--red);}
+  .item.k-semana::before{background:var(--amber);}
+  .item.k-done::before{background:var(--green);}
+  .item.k-done{opacity:.8;}
+  .hora{
+    flex:none; width:54px; text-align:center; font-weight:800; font-size:15px;
+    font-variant-numeric:tabular-nums;
+  }
+  .hora small{display:block; font-size:11px; font-weight:600; color:var(--muted); margin-top:2px;}
   .avatar{
-    flex:none; width:40px; height:40px; border-radius:50%; background:var(--panel2);
-    border:1px solid var(--border); color:var(--muted);
-    display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;
+    flex:none; width:40px; height:40px; border-radius:50%; background:var(--panel2); border:1px solid var(--border);
+    color:var(--muted); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;
   }
-  .client-id{flex:1; min-width:0;}
-  .client-name{font-size:16px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .client-dni{font-size:12.5px; color:var(--muted); margin-top:2px;}
-  .badge{
-    display:inline-block; font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; white-space:nowrap;
-  }
-  .badge.hoy{background:var(--red-bg); color:var(--red);}
-  .badge.vencido{background:var(--red-bg); color:var(--red);}
+  .item-body{flex:1; min-width:0;}
+  .item-name{font-size:16px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .item-sub{font-size:13px; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .item-sub b{color:var(--text); font-weight:600;}
+  .item-right{flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:5px;}
+
+  .badge{display:inline-block; font-size:11.5px; font-weight:700; padding:4px 9px; border-radius:20px; white-space:nowrap;}
+  .badge.verificar{background:var(--blue-bg); color:var(--blue);}
+  .badge.registrar{background:var(--violet-bg); color:var(--violet);}
+  .badge.atrasado, .badge.hoy{background:var(--red-bg); color:var(--red);}
   .badge.semana{background:var(--amber-bg); color:var(--amber);}
   .badge.futuro{background:var(--grey-bg); color:var(--muted);}
   .badge.pagado{background:var(--green-bg); color:var(--green);}
-  .badge.agendado{background:var(--blue-bg); color:var(--blue);}
   .badge.perdido{background:var(--grey-bg); color:var(--muted);}
 
-  .client-meta{
-    display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:10px; font-size:13px; color:var(--muted);
+  /* Calendario */
+  .cal{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:12px;}
+  .cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .cal-head h2{font-size:16px; margin:0;}
+  .cal-nav{display:flex; gap:6px;}
+  .cal-nav button{
+    background:var(--panel2); border:1px solid var(--border); color:var(--text); border-radius:10px;
+    height:34px; min-width:34px; padding:0 10px; cursor:pointer; font-size:13px; font-weight:600;
   }
-  .client-meta b{color:var(--text); font-weight:600;}
-  .client-notas{
-    font-size:13px; color:var(--muted); margin-top:8px;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
+  .cal-dow{font-size:11px; color:var(--muted); text-align:center; font-weight:700; padding:4px 0;}
+  .cal-day{
+    aspect-ratio:1/1; border-radius:10px; border:1px solid transparent; background:var(--panel2);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    cursor:pointer; font-size:14px; font-weight:600; color:var(--text); padding:0;
   }
+  .cal-day:hover{border-color:var(--border);}
+  .cal-day.out{visibility:hidden;}
+  .cal-day.nohabil{background:transparent; color:var(--muted); font-weight:500;}
+  .cal-day.feriado{color:var(--red);}
+  .cal-day.today{border-color:var(--accent);}
+  .cal-day.sel{background:var(--accent); color:var(--on-accent);}
+  .cal-day .cnt{
+    font-size:10.5px; font-weight:800; min-width:18px; padding:1px 5px; border-radius:9px;
+    background:var(--amber-bg); color:var(--amber); line-height:1.4;
+  }
+  .cal-day .cnt.over{background:var(--red-bg); color:var(--red);}
+  .cal-day.sel .cnt{background:rgba(255,255,255,.25); color:#fff;}
+  .cal-legend{display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--muted); margin-top:10px;}
+  .cal-legend span::before{content:"● "; }
+  .cal-legend .l-fer::before{color:var(--red);}
+  .cal-legend .l-cnt::before{color:var(--amber);}
 
   .fab{
     position:fixed; bottom:22px; right:max(20px, calc(50% - 344px));
     background:var(--accent); color:var(--on-accent); border:none; width:58px; height:58px;
     border-radius:50%; font-size:28px; cursor:pointer; box-shadow:var(--shadow);
-    display:flex; align-items:center; justify-content:center; transition:background .15s, transform .1s;
+    display:flex; align-items:center; justify-content:center;
   }
   .fab:hover{background:var(--accent2);}
-  .fab:active{transform:scale(0.94);}
 
   .overlay{
     position:fixed; inset:0; background:rgba(0,0,0,0.55); display:none;
@@ -183,10 +180,8 @@
   }
   .overlay.show{display:flex;}
   .sheet{
-    position:relative;
-    background:var(--panel); width:100%; max-width:720px; border-radius:22px 22px 0 0;
-    padding:26px 18px 22px; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow);
-    animation:slideup .2s ease-out;
+    position:relative; background:var(--panel); width:100%; max-width:720px; border-radius:22px 22px 0 0;
+    padding:26px 18px 22px; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow); animation:slideup .2s ease-out;
   }
   .sheet::before{
     content:""; position:absolute; top:9px; left:50%; transform:translateX(-50%);
@@ -197,9 +192,9 @@
     .sheet{max-width:520px; border-radius:22px;}
     .sheet::before{display:none;}
   }
-  @keyframes slideup{from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+  @keyframes slideup{from{transform:translateY(30px); opacity:0;} to{transform:none; opacity:1;}}
   @media (prefers-reduced-motion: reduce){ .sheet{animation:none;} }
-  .sheet h2{margin:0 44px 14px 0; font-size:19px; letter-spacing:-0.01em;}
+  .sheet h2{margin:0 44px 14px 0; font-size:19px;}
   .sheet .close{
     position:absolute; top:18px; right:14px; width:34px; height:34px; border-radius:50%;
     background:var(--panel2); border:none; color:var(--muted); font-size:15px; cursor:pointer;
@@ -213,44 +208,51 @@
   }
   .field textarea{resize:vertical; min-height:56px;}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .hint{font-size:12px; color:var(--muted); margin-top:5px; line-height:1.4;}
+  .hint{font-size:12.5px; color:var(--muted); margin-top:6px; line-height:1.45;}
+  .info-box{
+    border-radius:12px; padding:10px 12px; font-size:13.5px; line-height:1.45; margin:4px 0 13px;
+    background:var(--blue-bg); color:var(--text);
+  }
+  .info-box.neg{background:var(--violet-bg);}
+  .info-box b{font-weight:700;}
 
   .btn{
     display:block; width:100%; padding:13px; border-radius:12px; border:1px solid transparent;
-    font-size:14.5px; font-weight:700; cursor:pointer; margin-top:8px; text-align:center;
-    text-decoration:none; transition:background .15s;
+    font-size:14.5px; font-weight:700; cursor:pointer; margin-top:8px; text-align:center; text-decoration:none;
   }
   .btn.primary{background:var(--accent); color:var(--on-accent);}
   .btn.primary:hover{background:var(--accent2);}
   .btn.danger{background:var(--red-bg); color:var(--red);}
   .btn.ghost{background:var(--panel2); color:var(--text); border-color:var(--border);}
   .btn.ghost:hover{background:var(--hover);}
+  .btn.ok{background:var(--green-bg); color:var(--green);}
   .btn-row{display:flex; gap:8px; margin-top:8px;}
   .btn-row .btn{margin-top:0; padding:12px 6px; font-size:13.5px;}
 
-  .det-sub{color:var(--muted); font-size:13.5px; margin:-8px 0 10px;}
-  .det-fechas{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; font-size:13px; color:var(--muted); margin-bottom:14px;}
+  .det-sub{color:var(--muted); font-size:13.5px; margin:-8px 0 12px;}
+  .proximo{
+    background:var(--panel2); border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:12px;
+  }
+  .proximo .t{font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.05em;}
+  .proximo .v{font-size:17px; font-weight:800; margin-top:4px;}
+  .proximo .m{font-size:13px; color:var(--muted); margin-top:4px; line-height:1.4;}
+  .det-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; font-size:13.5px; margin-bottom:8px;}
+  .det-grid div span{display:block; color:var(--muted); font-size:12px; margin-bottom:2px;}
   .det-notas{font-size:14.5px; white-space:pre-wrap; line-height:1.45;}
-
-  .detail-section{margin-top:20px; border-top:1px solid var(--border); padding-top:16px;}
+  .detail-section{margin-top:18px; border-top:1px solid var(--border); padding-top:16px;}
   .detail-section h3{font-size:12px; color:var(--muted); margin:0 0 12px; text-transform:uppercase; letter-spacing:.06em;}
-
   .hist-item{background:var(--panel2); border-radius:11px; padding:10px 12px; margin-bottom:8px; font-size:14px;}
   .hist-item .hd{display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:3px;}
   .hist-item .hd b{color:var(--text); font-weight:600;}
 
   .toast{
     position:fixed; bottom:92px; left:50%; transform:translateX(-50%) translateY(8px);
-    background:var(--text); color:var(--bg);
-    padding:11px 18px; border-radius:30px; font-size:13.5px; font-weight:600; box-shadow:var(--shadow);
-    opacity:0; transition:opacity .2s, transform .2s; z-index:100; pointer-events:none;
+    background:var(--text); color:var(--bg); padding:11px 18px; border-radius:30px; font-size:13.5px; font-weight:600;
+    box-shadow:var(--shadow); opacity:0; transition:opacity .2s, transform .2s; z-index:100; pointer-events:none;
     display:flex; align-items:center; gap:14px; white-space:nowrap;
   }
-  .toast.show{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
-  .toast button{
-    background:none; border:none; color:inherit; font-weight:800; font-size:13.5px;
-    text-decoration:underline; cursor:pointer; padding:0;
-  }
+  .toast.show{opacity:1; transform:translateX(-50%); pointer-events:auto;}
+  .toast button{background:none; border:none; color:inherit; font-weight:800; font-size:13.5px; text-decoration:underline; cursor:pointer; padding:0;}
 </style>
 </head>
 <body>
@@ -258,74 +260,107 @@
   <header>
     <div>
       <h1>Mi Cartera de Clientes</h1>
-      <div class="sub" id="fechaHoy">Control de llamados y promesas de pago</div>
+      <div class="sub" id="fechaHoy"></div>
     </div>
     <button class="icon-btn" id="btnMenu" aria-label="Opciones">⋮</button>
   </header>
 
-  <div class="summary">
-    <button class="card hoy" data-filter="hoy"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></button>
-    <button class="card semana" data-filter="semana"><div class="num" id="cntSemana">0</div><div class="lbl">Esta semana</div></button>
-    <button class="card total" data-filter="activos"><div class="num" id="cntActivos">0</div><div class="lbl">Activos</div></button>
-  </div>
+  <nav class="tabs">
+    <button class="tab" data-view="hoy">Hoy<span class="n" id="tabHoyN" hidden></span></button>
+    <button class="tab" data-view="calendario">Calendario</button>
+    <button class="tab" data-view="clientes">Clientes</button>
+  </nav>
 
-  <input type="text" class="search" id="searchBox" placeholder="Buscar por DNI, nombre o teléfono…">
+  <!-- Vista: Hoy -->
+  <section id="viewHoy">
+    <div class="summary">
+      <div class="card c-red"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></div>
+      <div class="card c-violet"><div class="num" id="cntRegistrar">0</div><div class="lbl">A registrar</div></div>
+      <div class="card c-blue"><div class="num" id="cntActivos">0</div><div class="lbl">Activos</div></div>
+    </div>
+    <div id="hoyList"></div>
+  </section>
 
-  <div class="chips" id="chips">
-    <button class="chip" data-filter="activos">Activos</button>
-    <button class="chip" data-filter="hoy">Llamar hoy</button>
-    <button class="chip" data-filter="vencido">Vencidos</button>
-    <button class="chip" data-filter="semana">Esta semana</button>
-    <button class="chip" data-filter="agendado">Agendados</button>
-    <button class="chip" data-filter="pagado">Pagaron</button>
-    <button class="chip" data-filter="perdido">Perdidos</button>
-    <button class="chip" data-filter="todos">Todos</button>
-  </div>
+  <!-- Vista: Calendario -->
+  <section id="viewCalendario" hidden>
+    <div class="cal">
+      <div class="cal-head">
+        <h2 id="calTitle"></h2>
+        <div class="cal-nav">
+          <button id="calPrev" aria-label="Mes anterior">‹</button>
+          <button id="calToday">Hoy</button>
+          <button id="calNext" aria-label="Mes siguiente">›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend"><span class="l-cnt">Llamados del día</span><span class="l-fer">Feriado</span></div>
+    </div>
+    <div class="section-title" id="calDayTitle"></div>
+    <div class="list" id="calDayList"></div>
+  </section>
 
-  <div class="list" id="list"></div>
+  <!-- Vista: Clientes -->
+  <section id="viewClientes" hidden>
+    <input type="text" class="search" id="searchBox" placeholder="Buscar por DNI, nombre o teléfono…">
+    <div class="chips" id="chips">
+      <button class="chip" data-filter="activos">Activos</button>
+      <button class="chip" data-filter="registrar">A registrar</button>
+      <button class="chip" data-filter="verificar">A verificar pago</button>
+      <button class="chip" data-filter="pagado">Pagaron</button>
+      <button class="chip" data-filter="perdido">Perdidos</button>
+      <button class="chip" data-filter="todos">Todos</button>
+    </div>
+    <div class="list" id="clientList"></div>
+  </section>
 </div>
 
 <button class="fab" id="btnNuevo" aria-label="Nuevo cliente">+</button>
 
-<!-- Overlay: nuevo/editar cliente -->
+<!-- Overlay: nuevo / editar cliente -->
 <div class="overlay" id="overlayForm">
   <div class="sheet">
     <button class="close" data-close aria-label="Cerrar">✕</button>
     <h2 id="formTitle">Nuevo cliente</h2>
     <form id="clientForm">
       <input type="hidden" id="f_id">
-      <div class="row2">
-        <div class="field">
-          <label for="f_dni">DNI</label>
-          <input type="text" id="f_dni" inputmode="numeric" required>
-        </div>
-        <div class="field">
-          <label for="f_nombre">Nombre y apellido</label>
-          <input type="text" id="f_nombre" required>
-        </div>
+      <div class="field">
+        <label for="f_nombre">Nombre y apellido</label>
+        <input type="text" id="f_nombre" required autocomplete="off">
       </div>
       <div class="row2">
         <div class="field">
-          <label for="f_telefono">Teléfono (opcional)</label>
-          <input type="tel" id="f_telefono" inputmode="tel">
+          <label for="f_dni">DNI</label>
+          <input type="text" id="f_dni" inputmode="numeric" required autocomplete="off">
         </div>
         <div class="field">
-          <label for="f_monto">Monto adeudado (opcional)</label>
+          <label for="f_telefono">Teléfono (opcional)</label>
+          <input type="tel" id="f_telefono" inputmode="tel" autocomplete="off">
+        </div>
+      </div>
+      <div id="promesaBlock">
+        <div class="field">
+          <label for="f_promesaSel">Promesa de pago</label>
+          <select id="f_promesaSel"></select>
+        </div>
+        <div class="field" id="campoOtraFecha" hidden>
+          <label for="f_promesaOtra">Fecha negociada</label>
+          <input type="date" id="f_promesaOtra">
+        </div>
+        <div class="info-box" id="promesaInfo" hidden></div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f_hora">Horario de llamado</label>
+          <input type="time" id="f_hora" required>
+        </div>
+        <div class="field">
+          <label for="f_monto">Monto (opcional)</label>
           <input type="number" id="f_monto" inputmode="decimal" min="0" step="any">
         </div>
       </div>
       <div class="field">
-        <label for="f_fechaPromesa">Fecha en que el cliente prometió pagar</label>
-        <input type="date" id="f_fechaPromesa" required>
-      </div>
-      <div class="field">
-        <label for="f_fechaLlamado">Fecha para volver a llamar</label>
-        <input type="date" id="f_fechaLlamado" required>
-        <div class="hint">Se calcula sola, 5 días antes de la promesa (cuando el sistema ya te deja agendarla). La podés ajustar.</div>
-      </div>
-      <div class="field">
         <label for="f_notas">Notas</label>
-        <textarea id="f_notas" placeholder="Ej: dice que cobra el día 30, pedir que mande comprobante..."></textarea>
+        <textarea id="f_notas" placeholder="Ej: cobra el día 30, pedir comprobante…"></textarea>
       </div>
       <button type="submit" class="btn primary" id="btnGuardar">Guardar cliente</button>
       <button type="button" class="btn danger" id="btnEliminar" hidden>Eliminar cliente</button>
@@ -333,51 +368,30 @@
   </div>
 </div>
 
-<!-- Overlay: detalle cliente -->
+<!-- Overlay: detalle -->
 <div class="overlay" id="overlayDetail">
   <div class="sheet">
     <button class="close" data-close aria-label="Cerrar">✕</button>
-    <h2 id="detNombre">Cliente</h2>
-    <div class="det-sub" id="detDni"></div>
-    <div class="det-fechas" id="detBadge"></div>
+    <h2 id="detNombre"></h2>
+    <div class="det-sub" id="detSub"></div>
+
+    <div class="proximo" id="detProximo"></div>
 
     <div class="btn-row" id="detContacto" hidden>
       <a class="btn ghost" id="btnLlamar">📞 Llamar</a>
       <a class="btn ghost" id="btnWhatsapp" target="_blank" rel="noopener">💬 WhatsApp</a>
     </div>
 
-    <div class="field" style="margin-top:14px;"><label>Notas</label><div class="det-notas" id="detNotas"></div></div>
-
-    <div class="btn-row">
-      <button class="btn ghost" id="btnEditar">✏️ Editar</button>
-      <button class="btn ghost" id="btnMarcarPago">💰 Pagó</button>
-      <button class="btn ghost" id="btnMarcarPerdido">🚫 Perdido</button>
-      <button class="btn ghost" id="btnReactivar" hidden>↩️ Volver a pendiente</button>
-    </div>
+    <div id="detAcciones"></div>
 
     <div class="detail-section">
-      <h3>Registrar nuevo llamado</h3>
-      <div class="field">
-        <label for="hist_resultado">Resultado</label>
-        <select id="hist_resultado">
-          <option value="no_contesta">No contesta</option>
-          <option value="nueva_promesa">Nueva promesa de pago</option>
-          <option value="reagendo">Reagendó la misma fecha</option>
-          <option value="agendado_sistema">Ya quedó agendado en el sistema</option>
-          <option value="pago">Pagó</option>
-          <option value="no_pago">No va a pagar</option>
-          <option value="otro">Otro</option>
-        </select>
+      <h3>Datos</h3>
+      <div class="det-grid" id="detDatos"></div>
+      <div class="det-notas" id="detNotas"></div>
+      <div class="btn-row">
+        <button class="btn ghost" id="btnEditar">✏️ Editar</button>
+        <button class="btn ghost" id="btnReactivar" hidden>↩️ Volver a activo</button>
       </div>
-      <div class="field" id="campoNuevaFecha" hidden>
-        <label for="hist_nuevaFecha">Nueva fecha de promesa</label>
-        <input type="date" id="hist_nuevaFecha">
-      </div>
-      <div class="field">
-        <label for="hist_comentario">Comentario (opcional)</label>
-        <input type="text" id="hist_comentario">
-      </div>
-      <button class="btn primary" id="btnAgregarLlamado">Guardar llamado</button>
     </div>
 
     <div class="detail-section">
@@ -387,7 +401,29 @@
   </div>
 </div>
 
-<!-- Overlay: menu -->
+<!-- Overlay: nueva promesa / cambio de fecha -->
+<div class="overlay" id="overlayPromesa">
+  <div class="sheet">
+    <button class="close" data-close aria-label="Cerrar">✕</button>
+    <h2>Nueva promesa de pago</h2>
+    <div class="field">
+      <label for="np_sel">Fecha</label>
+      <select id="np_sel"></select>
+    </div>
+    <div class="field" id="np_otraField" hidden>
+      <label for="np_otra">Fecha negociada</label>
+      <input type="date" id="np_otra">
+    </div>
+    <div class="info-box" id="np_info" hidden></div>
+    <div class="field">
+      <label for="np_coment">Comentario (opcional)</label>
+      <input type="text" id="np_coment">
+    </div>
+    <button class="btn primary" id="np_guardar">Guardar nueva promesa</button>
+  </div>
+</div>
+
+<!-- Overlay: menú -->
 <div class="overlay" id="overlayMenu">
   <div class="sheet">
     <button class="close" data-close aria-label="Cerrar">✕</button>
@@ -396,7 +432,19 @@
     <button class="btn ghost" id="btnExportar">⬇️ Exportar backup (JSON)</button>
     <button class="btn ghost" id="btnImportar">⬆️ Importar backup</button>
     <input type="file" id="fileImportar" accept=".json,application/json" hidden>
-    <button class="btn danger" id="btnBorrarTodo">🗑️ Borrar todos los clientes</button>
+
+    <div class="detail-section">
+      <h3>Feriados extra</h3>
+      <div class="field">
+        <textarea id="feriadosExtra" placeholder="Uno por línea, formato DD/MM/AAAA"></textarea>
+        <div class="hint">La app ya descuenta sábados, domingos y los feriados nacionales cargados. Agregá acá días no laborables que falten (puentes, feriados nuevos).</div>
+      </div>
+      <button class="btn ghost" id="btnGuardarFeriados">Guardar feriados</button>
+    </div>
+
+    <div class="detail-section">
+      <button class="btn danger" id="btnBorrarTodo">🗑️ Borrar todos los clientes</button>
+    </div>
   </div>
 </div>
 
@@ -406,499 +454,608 @@
 (function(){
   const STORAGE_KEY = 'cartera_clientes_v1';
   const BACKUP_KEY = 'cartera_ultimo_backup';
-  const ESTADOS = ['pendiente','agendado','pagado','perdido'];
+  const FERIADOS_KEY = 'cartera_feriados_extra';
+  const DIAS_PROMESA = 4;       // hoy + 4 días hábiles
+  const HABILES_ANTES = 5;      // promesa negociada: llamar 5 hábiles antes para registrarla
+
+  // Feriados nacionales de Argentina (inamovibles, trasladables y puentes turísticos).
+  const FERIADOS_BASE = [
+    '2026-01-01','2026-02-16','2026-02-17','2026-03-23','2026-03-24','2026-04-02','2026-04-03',
+    '2026-05-01','2026-05-25','2026-06-15','2026-06-20','2026-07-09','2026-07-10','2026-08-17',
+    '2026-10-12','2026-11-23','2026-12-07','2026-12-08','2026-12-25',
+    '2027-01-01','2027-02-08','2027-02-09','2027-03-24','2027-03-26','2027-04-02','2027-05-01',
+    '2027-05-25','2027-06-20','2027-06-21','2027-07-09','2027-08-16','2027-10-11','2027-11-20',
+    '2027-12-08','2027-12-25'
+  ];
+
   let clientes = [];
-  let currentFilter = 'activos';
-  let currentDetailId = null;
+  let feriados = new Set(FERIADOS_BASE);
+  let vista = 'hoy';
+  let filtro = 'activos';
+  let detalleId = null;
+  let calMes = null;        // 'YYYY-MM'
+  let calSel = null;        // 'YYYY-MM-DD'
   let undoSnap = null;
   let toastTimer = null;
-
   const $ = id => document.getElementById(id);
 
-  // ---- Storage ----
-  function normalizar(x){
-    const fechaPromesa = x.fechaPromesa || '';
-    return {
-      id: x.id || uid(),
-      dni: String(x.dni || ''),
-      nombre: String(x.nombre || ''),
-      telefono: String(x.telefono || ''),
-      monto: (x.monto === '' || x.monto == null || isNaN(Number(x.monto))) ? '' : Number(x.monto),
-      fechaPromesa,
-      fechaLlamado: x.fechaLlamado || fechaPromesa || todayStr(),
-      notas: String(x.notas || ''),
-      estado: ESTADOS.includes(x.estado) ? x.estado : 'pendiente',
-      historial: Array.isArray(x.historial) ? x.historial : [],
-      creado: x.creado || todayStr()
-    };
+  // ---------- Fechas y días hábiles ----------
+  function ymd(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function parse(s){ return new Date(s+'T00:00:00'); }
+  function hoy(){ return ymd(new Date()); }
+  function horaActual(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+  function addDays(s,n){ const d=parse(s); d.setDate(d.getDate()+n); return ymd(d); }
+  function esFeriado(s){ return feriados.has(s); }
+  function esHabil(s){ const w=parse(s).getDay(); return w!==0 && w!==6 && !esFeriado(s); }
+  function sumarHabiles(s,n){
+    let d=s, paso=n>=0?1:-1, falta=Math.abs(n);
+    while(falta>0){ d=addDays(d,paso); if(esHabil(d)) falta--; }
+    return d;
   }
-  function normalizarLista(data){
-    return data.filter(x => x && typeof x === 'object').map(normalizar);
+  function habilDesde(s){ let d=s; while(!esHabil(d)) d=addDays(d,1); return d; }
+  function diasEntre(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
+  function opcionesPromesa(){
+    const base = habilDesde(hoy());
+    const out=[base];
+    for(let i=1;i<=DIAS_PROMESA;i++) out.push(sumarHabiles(base,i));
+    return out;
+  }
+  function limitePromesa(){ const o=opcionesPromesa(); return o[o.length-1]; }
+
+  const DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  function fmt(s){ if(!s) return '—'; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
+  function fmtCorto(s){ const d=parse(s); return DIAS[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+  function fmtLargo(s){
+    const t = parse(s).toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'});
+    return t.charAt(0).toUpperCase()+t.slice(1);
+  }
+  function relativo(s){
+    const d=diasEntre(hoy(),s);
+    if(d===0) return 'hoy';
+    if(d===1) return 'mañana';
+    if(d===-1) return 'ayer';
+    return d>0 ? 'en '+d+' días' : 'hace '+(-d)+' días';
+  }
+
+  // ---------- Reglas de llamado ----------
+  // Promesa dentro de la ventana (hoy + 4 hábiles): se registra en el sistema y se llama
+  // el día hábil siguiente al vencimiento para verificar el pago.
+  // Promesa negociada (más lejos): se llama 5 hábiles antes para registrarla en el sistema.
+  function esNegociada(fechaPromesa){ return fechaPromesa > limitePromesa(); }
+  function planDeLlamado(fechaPromesa, registrada){
+    if(!registrada){
+      const f = sumarHabiles(fechaPromesa, -HABILES_ANTES);
+      return {fechaLlamado: f < hoy() ? habilDesde(hoy()) : f, motivo:'registrar'};
+    }
+    return {fechaLlamado: sumarHabiles(fechaPromesa, 1), motivo:'verificar'};
+  }
+  function aplicarPromesa(c, fechaPromesa){
+    c.fechaPromesa = fechaPromesa;
+    c.negociada = esNegociada(fechaPromesa);
+    c.registrada = !c.negociada;
+    Object.assign(c, planDeLlamado(fechaPromesa, c.registrada));
+  }
+  function textoPlan(fechaPromesa){
+    if(esNegociada(fechaPromesa)){
+      const p = planDeLlamado(fechaPromesa,false);
+      return {neg:true, html:`<b>Promesa negociada.</b> Todavía no se puede registrar en el sistema. Te agendo un llamado el <b>${fmtCorto(p.fechaLlamado)}</b> (5 días hábiles antes) para registrarla.`};
+    }
+    const p = planDeLlamado(fechaPromesa,true);
+    return {neg:false, html:`Registrala en el sistema. Te agendo el llamado para verificar el pago el <b>${fmtCorto(p.fechaLlamado)}</b> (día hábil siguiente al vencimiento).`};
+  }
+
+  // ---------- Datos ----------
+  function uid(){ return 'c_'+Date.now()+'_'+Math.random().toString(36).slice(2,8); }
+  function normalizar(x){
+    const c = {
+      id: x.id || uid(),
+      nombre: String(x.nombre||''),
+      dni: String(x.dni||''),
+      telefono: String(x.telefono||''),
+      monto: (x.monto===''||x.monto==null||isNaN(Number(x.monto))) ? '' : Number(x.monto),
+      notas: String(x.notas||''),
+      fechaPromesa: x.fechaPromesa || hoy(),
+      hora: /^\d{2}:\d{2}$/.test(x.hora||'') ? x.hora : '10:00',
+      estado: ['activo','pagado','perdido'].includes(x.estado) ? x.estado : 'activo',
+      historial: Array.isArray(x.historial) ? x.historial : [],
+      creado: x.creado || hoy()
+    };
+    if(typeof x.registrada === 'boolean' && x.fechaLlamado && x.motivo){
+      c.registrada = x.registrada; c.negociada = !!x.negociada;
+      c.fechaLlamado = x.fechaLlamado; c.motivo = x.motivo;
+    } else {
+      // Datos de la versión anterior
+      if(x.estado==='pagado' || x.estado==='perdido') c.estado = x.estado;
+      c.registrada = x.estado==='agendado' || x.estado==='pagado' || x.estado==='perdido' || !esNegociada(c.fechaPromesa);
+      c.negociada = !c.registrada;
+      Object.assign(c, planDeLlamado(c.fechaPromesa, c.registrada));
+      if(!c.registrada && x.fechaLlamado) c.fechaLlamado = x.fechaLlamado;
+    }
+    return c;
   }
   function load(){
     try{
+      const raw = localStorage.getItem(FERIADOS_KEY);
+      (raw ? JSON.parse(raw) : []).forEach(f=>feriados.add(f));
+    }catch(e){}
+    try{
       const raw = localStorage.getItem(STORAGE_KEY);
       const data = raw ? JSON.parse(raw) : [];
-      clientes = Array.isArray(data) ? normalizarLista(data) : [];
+      clientes = Array.isArray(data) ? data.filter(x=>x&&typeof x==='object').map(normalizar) : [];
     }catch(e){ clientes = []; }
   }
   function save(){
-    try{
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
-    }catch(e){
-      alert('No se pudieron guardar los datos en este navegador.');
-    }
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes)); }
+    catch(e){ alert('No se pudieron guardar los datos en este navegador.'); }
   }
+  function getC(id){ return clientes.find(c=>c.id===id); }
+  const activos = () => clientes.filter(c=>c.estado==='activo');
+  function ordenLlamado(a,b){ return (a.fechaLlamado+a.hora).localeCompare(b.fechaLlamado+b.hora); }
 
-  // ---- Helpers ----
-  function uid(){
-    return 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
-  }
-  function ymd(d){
-    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  }
-  function todayStr(){ return ymd(new Date()); }
-  function addDays(dateStr, days){
-    const d = new Date(dateStr + 'T00:00:00');
-    d.setDate(d.getDate() + days);
-    return ymd(d);
-  }
-  function daysBetween(a, b){
-    const da = new Date(a + 'T00:00:00');
-    const db = new Date(b + 'T00:00:00');
-    return Math.round((db - da) / 86400000);
-  }
-  function fmtDate(dateStr){
-    if(!dateStr) return '—';
-    const [y,m,d] = dateStr.split('-');
-    return d+'/'+m+'/'+y;
-  }
-  function fmtMoney(m){
-    if(m === '' || m == null) return '';
-    return '$ ' + Number(m).toLocaleString('es-AR', {maximumFractionDigits:2});
-  }
-  function iniciales(nombre){
-    return nombre.trim().split(/\s+/).slice(0,2).map(w => w[0] || '').join('').toUpperCase() || '?';
-  }
-  function soloDigitos(s){ return (s || '').replace(/\D/g, ''); }
-  function whatsappNumero(tel){
-    let d = soloDigitos(tel).replace(/^0+/, '');
-    if(d.length <= 10) d = '549' + d; // número local argentino sin código de país
-    return d;
-  }
-  function escapeHtml(s){
-    return String(s == null ? '' : s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+  // ---------- Utilidades UI ----------
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function iniciales(n){ return n.trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?'; }
+  function digitos(s){ return (s||'').replace(/\D/g,''); }
+  function waNumero(t){ let d=digitos(t).replace(/^0+/,''); if(d.length<=10) d='549'+d; return d; }
+  function money(m){ return m===''||m==null ? '' : '$ '+Number(m).toLocaleString('es-AR',{maximumFractionDigits:2}); }
+  function motivoLabel(m){ return m==='registrar' ? 'Registrar promesa' : 'Verificar pago'; }
 
-  // ---- Toast + deshacer ----
   function snapshot(){ undoSnap = JSON.stringify(clientes); }
-  function toast(msg, conDeshacer){
+  function toast(msg, deshacer){
     $('toastMsg').textContent = msg;
-    $('toastUndo').hidden = !conDeshacer;
-    if(!conDeshacer) undoSnap = null;
-    const t = $('toast');
-    t.classList.add('show');
+    $('toastUndo').hidden = !deshacer;
+    if(!deshacer) undoSnap = null;
+    $('toast').classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>t.classList.remove('show'), conDeshacer ? 6000 : 1800);
+    toastTimer = setTimeout(()=>$('toast').classList.remove('show'), deshacer?6000:1800);
   }
   $('toastUndo').addEventListener('click', ()=>{
     if(!undoSnap) return;
-    clientes = JSON.parse(undoSnap);
-    save();
-    render();
-    if(currentDetailId) renderDetail();
-    toast('Cambio deshecho');
+    clientes = JSON.parse(undoSnap).map(normalizar);
+    save(); renderAll(); toast('Cambio deshecho');
   });
 
-  // ---- Urgencia de los clientes pendientes ----
-  function urgencyInfo(cliente){
-    if(cliente.estado !== 'pendiente'){
-      return {key: cliente.estado, label: labelEstado(cliente.estado), cls: cliente.estado};
+  // ---------- Render ----------
+  function itemLlamado(c, mostrarFecha){
+    const d = diasEntre(hoy(), c.fechaLlamado);
+    const k = d<0 ? 'atrasado' : d===0 ? 'hoy' : d<=7 ? 'semana' : 'futuro';
+    const div = document.createElement('div');
+    div.className = 'item k-'+k;
+    div.innerHTML = `
+      <div class="hora">${esc(c.hora)}${mostrarFecha ? `<small>${esc(fmtCorto(c.fechaLlamado))}</small>` : ''}</div>
+      <div class="item-body">
+        <div class="item-name">${esc(c.nombre)}</div>
+        <div class="item-sub">DNI ${esc(c.dni)} · Promesa <b>${esc(fmtCorto(c.fechaPromesa))}</b>${c.monto!==''?' · '+esc(money(c.monto)):''}</div>
+      </div>
+      <div class="item-right">
+        <span class="badge ${c.motivo}">${motivoLabel(c.motivo)}</span>
+        ${d<0 ? `<span class="badge atrasado">Atrasado ${-d}d</span>` : ''}
+      </div>`;
+    div.addEventListener('click', ()=>openDetail(c.id));
+    return div;
+  }
+
+  function renderHoy(){
+    const h = hoy();
+    const act = activos();
+    const delDia = act.filter(c=>c.fechaLlamado<=h).sort(ordenLlamado);
+    $('cntHoy').textContent = delDia.length;
+    $('cntRegistrar').textContent = act.filter(c=>c.motivo==='registrar').length;
+    $('cntActivos').textContent = act.length;
+    $('tabHoyN').hidden = delDia.length===0;
+    $('tabHoyN').textContent = delDia.length;
+
+    const cont = $('hoyList'); cont.innerHTML='';
+    const atrasados = delDia.filter(c=>c.fechaLlamado<h);
+    const deHoy = delDia.filter(c=>c.fechaLlamado===h);
+    const proximo = sumarHabiles(h,1);
+    const manana = act.filter(c=>c.fechaLlamado>h && c.fechaLlamado<=proximo).sort(ordenLlamado);
+
+    function bloque(titulo, lista, conFecha){
+      if(!lista.length) return;
+      const t=document.createElement('div'); t.className='section-title'; t.textContent=titulo; cont.appendChild(t);
+      const l=document.createElement('div'); l.className='list';
+      lista.forEach(c=>l.appendChild(itemLlamado(c,conFecha)));
+      cont.appendChild(l);
     }
-    const diff = daysBetween(todayStr(), cliente.fechaLlamado);
-    if(diff < 0) return {key:'vencido', label:'Vencido hace '+Math.abs(diff)+'d', cls:'vencido'};
-    if(diff === 0) return {key:'hoy', label:'Llamar hoy', cls:'hoy'};
-    if(diff <= 7) return {key:'semana', label:'En '+diff+(diff===1?' día':' días'), cls:'semana'};
-    return {key:'futuro', label:fmtDate(cliente.fechaLlamado), cls:'futuro'};
-  }
-  function labelEstado(e){
-    return {pagado:'Pagó', perdido:'Perdido', agendado:'Agendado'}[e] || e;
-  }
-
-  // "Llamar hoy" incluye los vencidos: son todos los que hay que llamar ya.
-  function matchesFilter(cliente, filter){
-    const pend = cliente.estado === 'pendiente';
-    const key = urgencyInfo(cliente).key;
-    switch(filter){
-      case 'activos': return pend;
-      case 'hoy': return pend && (key==='hoy' || key==='vencido');
-      case 'vencido': return pend && key==='vencido';
-      case 'semana': return pend && (key==='hoy' || key==='vencido' || key==='semana');
-      case 'agendado': case 'pagado': case 'perdido': return cliente.estado === filter;
-      default: return true;
-    }
-  }
-  function setFilter(f){
-    currentFilter = f;
-    render();
-  }
-
-  function render(){
-    const pendientes = clientes.filter(c => c.estado === 'pendiente');
-    $('cntHoy').textContent = pendientes.filter(c => matchesFilter(c,'hoy')).length;
-    $('cntSemana').textContent = pendientes.filter(c => matchesFilter(c,'semana')).length;
-    $('cntActivos').textContent = pendientes.length;
-
-    document.querySelectorAll('.summary .card, .chip').forEach(el=>{
-      el.classList.toggle('active', el.dataset.filter === currentFilter);
-    });
-
-    const search = $('searchBox').value.trim().toLowerCase();
-    let list = clientes.filter(c => matchesFilter(c, currentFilter));
-    if(search){
-      const digits = soloDigitos(search);
-      list = list.filter(c =>
-        c.dni.toLowerCase().includes(search) ||
-        c.nombre.toLowerCase().includes(search) ||
-        (digits && soloDigitos(c.telefono).includes(digits))
-      );
-    }
-    // pendientes primero por fecha de llamado; el resto por promesa más reciente
-    list.sort((a,b)=>{
-      if(a.estado==='pendiente' && b.estado==='pendiente'){
-        return a.fechaLlamado.localeCompare(b.fechaLlamado);
-      }
-      if(a.estado==='pendiente') return -1;
-      if(b.estado==='pendiente') return 1;
-      return (b.fechaPromesa||'').localeCompare(a.fechaPromesa||'');
-    });
-
-    const listEl = $('list');
-    listEl.innerHTML = '';
-    if(list.length === 0){
-      listEl.innerHTML = clientes.length === 0
-        ? '<div class="empty"><div class="big">📋</div>Todavía no cargaste clientes.<br>Tocá el botón + para agregar el primero.</div>'
-        : '<div class="empty"><div class="big">✓</div>No hay clientes en esta vista.</div>';
+    if(!clientes.length){
+      cont.innerHTML='<div class="empty"><div class="big">📋</div>Todavía no cargaste clientes.<br>Tocá el botón + para agregar el primero.</div>';
       return;
     }
-    list.forEach(c=>{
-      const info = urgencyInfo(c);
-      const urgClass = c.estado==='pendiente' ? 'urg-'+info.key : 'urg-done';
-      const div = document.createElement('div');
-      div.className = 'client ' + urgClass;
-      div.innerHTML = `
-        <div class="client-top">
-          <div class="avatar">${escapeHtml(iniciales(c.nombre))}</div>
-          <div class="client-id">
-            <div class="client-name">${escapeHtml(c.nombre)}</div>
-            <div class="client-dni">DNI ${escapeHtml(c.dni)}</div>
-          </div>
-          <div class="badge ${info.cls}">${escapeHtml(info.label)}</div>
+    if(!esHabil(h)){
+      const t=document.createElement('div'); t.className='hint'; t.style.margin='0 2px 10px';
+      t.textContent = (esFeriado(h)?'Hoy es feriado.':'Hoy no es día hábil.')+' El próximo día hábil es '+fmtLargo(habilDesde(h)).toLowerCase()+'.';
+      cont.appendChild(t);
+    }
+    bloque('Atrasados', atrasados, true);
+    bloque('Hoy · '+deHoy.length+(deHoy.length===1?' llamado':' llamados'), deHoy, false);
+    if(!atrasados.length && !deHoy.length){
+      cont.insertAdjacentHTML('beforeend','<div class="empty"><div class="big">✓</div>No tenés llamados pendientes para hoy.</div>');
+    }
+    bloque('Próximo día hábil · '+fmtCorto(proximo), manana, true);
+  }
+
+  function renderCalendario(){
+    const h = hoy();
+    if(!calMes) calMes = h.slice(0,7);
+    if(!calSel) calSel = h;
+    const [y,m] = calMes.split('-').map(Number);
+    const primero = new Date(y,m-1,1);
+    const tit = primero.toLocaleDateString('es-AR',{month:'long',year:'numeric'}).replace(' de ',' ');
+    $('calTitle').textContent = tit.charAt(0).toUpperCase()+tit.slice(1);
+
+    const porDia = {};
+    activos().forEach(c=>{ porDia[c.fechaLlamado]=(porDia[c.fechaLlamado]||0)+1; });
+
+    const g = $('calGrid'); g.innerHTML='';
+    ['lun','mar','mié','jue','vie','sáb','dom'].forEach(d=>g.insertAdjacentHTML('beforeend',`<div class="cal-dow">${d}</div>`));
+    const offset = (primero.getDay()+6)%7;
+    for(let i=0;i<offset;i++) g.insertAdjacentHTML('beforeend','<div class="cal-day out"></div>');
+    const diasMes = new Date(y,m,0).getDate();
+    for(let d=1; d<=diasMes; d++){
+      const s = calMes+'-'+String(d).padStart(2,'0');
+      const n = porDia[s]||0;
+      const b = document.createElement('button');
+      b.className = 'cal-day'+(esHabil(s)?'':' nohabil')+(esFeriado(s)?' feriado':'')+(s===h?' today':'')+(s===calSel?' sel':'');
+      b.innerHTML = `<span>${d}</span>${n?`<span class="cnt${s<h?' over':''}">${n}</span>`:''}`;
+      b.title = esFeriado(s) ? 'Feriado' : '';
+      b.addEventListener('click', ()=>{ calSel=s; renderCalendario(); });
+      g.appendChild(b);
+    }
+
+    const lista = activos().filter(c=>c.fechaLlamado===calSel).sort(ordenLlamado);
+    $('calDayTitle').textContent = fmtLargo(calSel)+(esFeriado(calSel)?' · feriado':'')+' · '+lista.length+(lista.length===1?' llamado':' llamados');
+    const cont = $('calDayList'); cont.innerHTML='';
+    if(!lista.length) cont.innerHTML='<div class="empty" style="padding:20px 10px;">Sin llamados agendados este día.</div>';
+    lista.forEach(c=>cont.appendChild(itemLlamado(c,false)));
+  }
+
+  function renderClientes(){
+    document.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('active', ch.dataset.filter===filtro));
+    const q = $('searchBox').value.trim().toLowerCase();
+    const qd = digitos(q);
+    let lista = clientes.filter(c=>{
+      switch(filtro){
+        case 'activos': return c.estado==='activo';
+        case 'registrar': return c.estado==='activo' && c.motivo==='registrar';
+        case 'verificar': return c.estado==='activo' && c.motivo==='verificar';
+        case 'pagado': case 'perdido': return c.estado===filtro;
+        default: return true;
+      }
+    });
+    if(q) lista = lista.filter(c=>c.nombre.toLowerCase().includes(q) || c.dni.toLowerCase().includes(q) || (qd && digitos(c.telefono).includes(qd)));
+    lista.sort((a,b)=>{
+      if(a.estado==='activo' && b.estado==='activo') return ordenLlamado(a,b);
+      if(a.estado==='activo') return -1;
+      if(b.estado==='activo') return 1;
+      return b.fechaPromesa.localeCompare(a.fechaPromesa);
+    });
+    const cont = $('clientList'); cont.innerHTML='';
+    if(!lista.length){ cont.innerHTML='<div class="empty">No hay clientes en esta vista.</div>'; return; }
+    lista.forEach(c=>{
+      if(c.estado==='activo'){ cont.appendChild(itemLlamado(c,true)); return; }
+      const div=document.createElement('div');
+      div.className='item k-done';
+      div.innerHTML=`
+        <div class="avatar">${esc(iniciales(c.nombre))}</div>
+        <div class="item-body">
+          <div class="item-name">${esc(c.nombre)}</div>
+          <div class="item-sub">DNI ${esc(c.dni)} · Promesa ${esc(fmt(c.fechaPromesa))}</div>
         </div>
-        <div class="client-meta">
-          <span>Promesa <b>${fmtDate(c.fechaPromesa)}</b></span>
-          <span>Llamar <b>${fmtDate(c.fechaLlamado)}</b></span>
-          ${c.monto !== '' ? `<span>Debe <b>${escapeHtml(fmtMoney(c.monto))}</b></span>` : ''}
-        </div>
-        ${c.notas ? `<div class="client-notas">${escapeHtml(c.notas)}</div>` : ''}
-      `;
+        <div class="item-right"><span class="badge ${c.estado}">${c.estado==='pagado'?'Pagó':'Perdido'}</span></div>`;
       div.addEventListener('click', ()=>openDetail(c.id));
-      listEl.appendChild(div);
+      cont.appendChild(div);
     });
   }
 
-  // ---- Form (nuevo/editar) ----
-  const overlayForm = $('overlayForm');
-  const overlayDetail = $('overlayDetail');
-  const overlayMenu = $('overlayMenu');
-
-  function openForm(cliente){
-    $('formTitle').textContent = cliente ? 'Editar cliente' : 'Nuevo cliente';
-    $('f_id').value = cliente ? cliente.id : '';
-    $('f_dni').value = cliente ? cliente.dni : '';
-    $('f_nombre').value = cliente ? cliente.nombre : '';
-    $('f_telefono').value = cliente ? cliente.telefono : '';
-    $('f_monto').value = cliente ? cliente.monto : '';
-    $('f_fechaPromesa').value = cliente ? cliente.fechaPromesa : '';
-    $('f_fechaLlamado').value = cliente ? cliente.fechaLlamado : '';
-    $('f_notas').value = cliente ? cliente.notas : '';
-    $('btnEliminar').hidden = !cliente;
-    // La fecha de llamado se recalcula sola salvo que ya haya sido ajustada a mano.
-    const auto = !cliente || !cliente.fechaPromesa || cliente.fechaLlamado === addDays(cliente.fechaPromesa, -5);
-    $('f_fechaLlamado').dataset.auto = auto ? 'true' : 'false';
-    overlayForm.classList.add('show');
+  function renderAll(){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.view===vista));
+    $('viewHoy').hidden = vista!=='hoy';
+    $('viewCalendario').hidden = vista!=='calendario';
+    $('viewClientes').hidden = vista!=='clientes';
+    renderHoy();
+    if(vista==='calendario') renderCalendario();
+    if(vista==='clientes') renderClientes();
+    if(detalleId && $('overlayDetail').classList.contains('show')) renderDetail();
   }
-  function closeForm(){ overlayForm.classList.remove('show'); }
 
+  // ---------- Selector de promesa (reutilizable) ----------
+  function llenarSelectPromesa(sel, actual){
+    const ops = opcionesPromesa();
+    sel.innerHTML = ops.map((f,i)=>`<option value="${f}">${fmtCorto(f)}${i===0?' (hoy)':''}${i===ops.length-1?' · último día':''}</option>`).join('')
+      + '<option value="otra">Otra fecha (negociada)…</option>';
+    if(actual && ops.includes(actual)) sel.value = actual;
+    else if(actual){ sel.value = 'otra'; }
+    else sel.value = ops[0];
+  }
+  function leerPromesa(sel, otra){ return sel.value==='otra' ? otra.value : sel.value; }
+  function actualizarInfo(sel, otraField, otra, info){
+    otraField.hidden = sel.value!=='otra';
+    otra.min = addDays(hoy(),1);
+    const f = leerPromesa(sel, otra);
+    if(!f){ info.hidden = true; return; }
+    const t = textoPlan(f);
+    info.hidden = false;
+    info.className = 'info-box'+(t.neg?' neg':'');
+    info.innerHTML = t.html;
+  }
+
+  // ---------- Formulario ----------
+  const overlayForm=$('overlayForm'), overlayDetail=$('overlayDetail'), overlayMenu=$('overlayMenu'), overlayPromesa=$('overlayPromesa');
+
+  function openForm(c){
+    $('formTitle').textContent = c ? 'Editar cliente' : 'Nuevo cliente';
+    $('f_id').value = c ? c.id : '';
+    $('f_nombre').value = c ? c.nombre : '';
+    $('f_dni').value = c ? c.dni : '';
+    $('f_telefono').value = c ? c.telefono : '';
+    $('f_monto').value = c ? c.monto : '';
+    $('f_notas').value = c ? c.notas : '';
+    $('f_hora').value = c ? c.hora : horaActual();
+    $('btnEliminar').hidden = !c;
+    // Al editar, la promesa se cambia desde "Nueva promesa" para dejar registro en el historial.
+    $('promesaBlock').hidden = !!c;
+    if(!c){
+      llenarSelectPromesa($('f_promesaSel'), null);
+      $('f_promesaOtra').value = '';
+      actualizarInfo($('f_promesaSel'), $('campoOtraFecha'), $('f_promesaOtra'), $('promesaInfo'));
+    }
+    overlayForm.classList.add('show');
+    if(!c) setTimeout(()=>$('f_nombre').focus(), 50);
+  }
+  ['change','input'].forEach(ev=>{
+    $('f_promesaSel').addEventListener(ev, ()=>actualizarInfo($('f_promesaSel'), $('campoOtraFecha'), $('f_promesaOtra'), $('promesaInfo')));
+    $('f_promesaOtra').addEventListener(ev, ()=>actualizarInfo($('f_promesaSel'), $('campoOtraFecha'), $('f_promesaOtra'), $('promesaInfo')));
+  });
   $('btnNuevo').addEventListener('click', ()=>openForm(null));
 
-  $('f_fechaPromesa').addEventListener('change', (e)=>{
-    const fl = $('f_fechaLlamado');
-    if(e.target.value && (!fl.value || fl.dataset.auto === 'true')){
-      fl.value = addDays(e.target.value, -5);
-      fl.dataset.auto = 'true';
-    }
-  });
-  $('f_fechaLlamado').addEventListener('input', (e)=>{
-    e.target.dataset.auto = e.target.value ? 'false' : 'true';
-  });
-
-  $('clientForm').addEventListener('submit', (e)=>{
+  $('clientForm').addEventListener('submit', e=>{
     e.preventDefault();
     const id = $('f_id').value;
     const montoRaw = $('f_monto').value.trim();
     const datos = {
-      dni: $('f_dni').value.trim(),
       nombre: $('f_nombre').value.trim(),
+      dni: $('f_dni').value.trim(),
       telefono: $('f_telefono').value.trim(),
-      monto: montoRaw === '' ? '' : Number(montoRaw),
-      fechaPromesa: $('f_fechaPromesa').value,
-      fechaLlamado: $('f_fechaLlamado').value,
-      notas: $('f_notas').value.trim()
+      monto: montoRaw==='' ? '' : Number(montoRaw),
+      notas: $('f_notas').value.trim(),
+      hora: $('f_hora').value || horaActual()
     };
+    const rep = clientes.find(x=>x.id!==id && x.estado==='activo' && digitos(x.dni) && digitos(x.dni)===digitos(datos.dni));
+    if(rep && !confirm('Ya tenés un cliente activo con ese DNI: '+rep.nombre+'.\n¿Guardar igual?')) return;
 
-    const repetido = clientes.find(x => x.id !== id && soloDigitos(x.dni) === soloDigitos(datos.dni) && soloDigitos(datos.dni));
-    if(repetido && !confirm('Ya tenés cargado un cliente con ese DNI: '+repetido.nombre+'.\n¿Guardar igual?')) return;
-
+    snapshot();
     if(id){
-      const c = clientes.find(x=>x.id===id);
-      if(c) Object.assign(c, datos);
-      toast('Cliente actualizado');
+      Object.assign(getC(id), datos);
+      toast('Cliente actualizado', true);
     } else {
-      clientes.push(normalizar(Object.assign({id: uid()}, datos)));
-      toast('Cliente agregado');
+      const fp = leerPromesa($('f_promesaSel'), $('f_promesaOtra'));
+      if(!fp){ alert('Elegí la fecha de la promesa.'); return; }
+      if(fp < hoy()){ alert('La promesa no puede ser anterior a hoy.'); return; }
+      const c = normalizar(Object.assign({id:uid(), creado:hoy(), estado:'activo'}, datos, {fechaPromesa:fp}));
+      aplicarPromesa(c, fp);
+      c.historial.push({fecha:hoy(), resultado:'alta', comentario:(c.negociada?'Promesa negociada para el ':'Promesa para el ')+fmt(fp)});
+      clientes.push(c);
+      toast(c.negociada ? 'Agendado para registrar el '+fmtCorto(c.fechaLlamado) : 'Llamado agendado el '+fmtCorto(c.fechaLlamado), true);
     }
-    save();
-    closeForm();
-    render();
+    save(); overlayForm.classList.remove('show'); renderAll();
   });
 
   $('btnEliminar').addEventListener('click', ()=>{
-    const id = $('f_id').value;
-    if(confirm('¿Eliminar este cliente?')){
-      snapshot();
-      clientes = clientes.filter(c=>c.id!==id);
-      save();
-      closeForm();
-      render();
-      toast('Cliente eliminado', true);
-    }
+    const id=$('f_id').value;
+    if(!confirm('¿Eliminar este cliente?')) return;
+    snapshot();
+    clientes = clientes.filter(c=>c.id!==id);
+    save(); overlayForm.classList.remove('show'); renderAll(); toast('Cliente eliminado', true);
   });
 
-  // ---- Detalle ----
-  function openDetail(id){
-    currentDetailId = id;
-    renderDetail();
-    overlayDetail.classList.add('show');
-  }
-  function closeDetail(){ overlayDetail.classList.remove('show'); currentDetailId=null; }
+  // ---------- Detalle ----------
+  function openDetail(id){ detalleId=id; renderDetail(); overlayDetail.classList.add('show'); }
 
   function renderDetail(){
-    const c = clientes.find(x=>x.id===currentDetailId);
-    if(!c) return closeDetail();
+    const c = getC(detalleId);
+    if(!c){ overlayDetail.classList.remove('show'); detalleId=null; return; }
     $('detNombre').textContent = c.nombre;
-    $('detDni').textContent = 'DNI ' + c.dni + (c.telefono ? ' · ' + c.telefono : '');
-    const info = urgencyInfo(c);
-    $('detBadge').innerHTML = `<span class="badge ${info.cls}">${escapeHtml(info.label)}</span>
-      <span>Promesa ${fmtDate(c.fechaPromesa)}</span><span>Llamar ${fmtDate(c.fechaLlamado)}</span>
-      ${c.monto !== '' ? `<span>Debe ${escapeHtml(fmtMoney(c.monto))}</span>` : ''}`;
-    $('detNotas').textContent = c.notas || '(sin notas)';
+    $('detSub').textContent = 'DNI '+c.dni+(c.telefono?' · '+c.telefono:'');
 
-    const tel = soloDigitos(c.telefono);
-    $('detContacto').hidden = !tel;
-    if(tel){
-      $('btnLlamar').href = 'tel:' + tel;
-      $('btnWhatsapp').href = 'https://wa.me/' + whatsappNumero(c.telefono);
-    }
-
-    const pend = c.estado === 'pendiente';
-    $('btnMarcarPago').hidden = !pend;
-    $('btnMarcarPerdido').hidden = !pend;
-    $('btnReactivar').hidden = pend;
-
-    const hist = $('detHistorial');
-    if(c.historial.length===0){
-      hist.innerHTML = '<div class="empty" style="padding:14px 0;">Todavía no hay llamados registrados.</div>';
+    const p = $('detProximo');
+    if(c.estado==='activo'){
+      const d = diasEntre(hoy(), c.fechaLlamado);
+      const explic = c.motivo==='registrar'
+        ? `Promesa negociada para el ${fmt(c.fechaPromesa)}. Ese día ya se puede registrar en el sistema.`
+        : `Promesa ${c.fechaPromesa<hoy()?'vencida':'que vence'} el ${fmt(c.fechaPromesa)}. Llamá para confirmar si pagó.`;
+      p.innerHTML = `<div class="t">Próximo llamado · ${motivoLabel(c.motivo)}</div>
+        <div class="v">${esc(fmtLargo(c.fechaLlamado))} · ${esc(c.hora)} <span class="badge ${d<0?'atrasado':d===0?'hoy':'futuro'}">${esc(relativo(c.fechaLlamado))}</span></div>
+        <div class="m">${esc(explic)}</div>`;
+      p.hidden = false;
     } else {
-      hist.innerHTML = c.historial.slice().reverse().map(h=>`
-        <div class="hist-item">
-          <div class="hd"><b>${escapeHtml(resultadoLabel(h.resultado))}</b><span>${fmtDate(h.fecha)}</span></div>
-          ${h.comentario ? escapeHtml(h.comentario) : ''}
+      p.innerHTML = `<div class="t">Estado</div><div class="v"><span class="badge ${c.estado}">${c.estado==='pagado'?'Pagó':'Perdido'}</span></div>`;
+    }
+
+    const tel = digitos(c.telefono);
+    $('detContacto').hidden = !tel;
+    if(tel){ $('btnLlamar').href='tel:'+tel; $('btnWhatsapp').href='https://wa.me/'+waNumero(c.telefono); }
+
+    const acc = $('detAcciones');
+    if(c.estado!=='activo'){ acc.innerHTML=''; }
+    else if(c.motivo==='registrar'){
+      acc.innerHTML = `<div class="detail-section"><h3>Resultado del llamado</h3>
+        <button class="btn ok" data-acc="registrada">✅ Promesa registrada en el sistema</button>
+        <div class="btn-row">
+          <button class="btn ghost" data-acc="no_contesta">📵 No contesta</button>
+          <button class="btn ghost" data-acc="nueva">📅 Cambió la fecha</button>
         </div>
-      `).join('');
+        <div class="btn-row">
+          <button class="btn ghost" data-acc="pago">💰 Ya pagó</button>
+          <button class="btn ghost" data-acc="perdido">🚫 No va a pagar</button>
+        </div></div>`;
+    } else {
+      acc.innerHTML = `<div class="detail-section"><h3>Resultado del llamado</h3>
+        <button class="btn ok" data-acc="pago">💰 Pagó</button>
+        <div class="btn-row">
+          <button class="btn ghost" data-acc="no_contesta">📵 No contesta</button>
+          <button class="btn ghost" data-acc="nueva">📅 Nueva promesa</button>
+        </div>
+        <button class="btn ghost" data-acc="perdido">🚫 No va a pagar</button></div>`;
     }
+    acc.querySelectorAll('[data-acc]').forEach(b=>b.addEventListener('click', ()=>accion(c.id, b.dataset.acc)));
+
+    $('detDatos').innerHTML = `
+      <div><span>Promesa</span>${esc(fmt(c.fechaPromesa))}${c.negociada?' (negociada)':''}</div>
+      <div><span>Horario de llamado</span>${esc(c.hora)}</div>
+      ${c.monto!==''?`<div><span>Monto</span>${esc(money(c.monto))}</div>`:''}
+      <div><span>Cargado</span>${esc(fmt(c.creado))}</div>`;
+    $('detNotas').textContent = c.notas;
+    $('btnReactivar').hidden = c.estado==='activo';
+
+    $('detHistorial').innerHTML = !c.historial.length
+      ? '<div class="empty" style="padding:14px 0;">Sin movimientos.</div>'
+      : c.historial.slice().reverse().map(h=>`
+        <div class="hist-item"><div class="hd"><b>${esc(resLabel(h.resultado))}</b><span>${esc(fmt(h.fecha))}${h.hora?' '+esc(h.hora):''}</span></div>${esc(h.comentario||'')}</div>`).join('');
   }
-  function resultadoLabel(r){
-    return {
-      no_contesta:'No contesta', nueva_promesa:'Nueva promesa', reagendo:'Reagendó',
-      agendado_sistema:'Agendado en sistema', pago:'Pagó', no_pago:'No va a pagar',
-      reactivado:'Volvió a pendiente', otro:'Otro'
-    }[r] || r;
+  function resLabel(r){
+    return {alta:'Alta de ficha', registrada:'Registrada en el sistema', no_contesta:'No contesta', nueva_promesa:'Nueva promesa',
+      pago:'Pagó', no_pago:'No va a pagar', reactivado:'Volvió a activo',
+      agendado_sistema:'Agendado en sistema', reagendo:'Reagendó', otro:'Otro'}[r] || r;
   }
+  function registrar(c, resultado, comentario){ c.historial.push({fecha:hoy(), hora:horaActual(), resultado, comentario:comentario||''}); }
 
-  $('hist_resultado').addEventListener('change', (e)=>{
-    $('campoNuevaFecha').hidden = e.target.value !== 'nueva_promesa';
-  });
-
-  $('btnAgregarLlamado').addEventListener('click', ()=>{
-    const c = clientes.find(x=>x.id===currentDetailId);
-    if(!c) return;
-    const resultado = $('hist_resultado').value;
-    const comentario = $('hist_comentario').value.trim();
-    const nuevaFecha = $('hist_nuevaFecha').value;
-
-    if(resultado === 'nueva_promesa' && !nuevaFecha){
-      alert('Elegí la nueva fecha de promesa.');
-      return;
-    }
-
+  function accion(id, a){
+    const c = getC(id); if(!c) return;
+    if(a==='nueva'){ abrirNuevaPromesa(c); return; }
     snapshot();
-    const hoy = todayStr();
-    let detalle = comentario;
-    if(resultado === 'nueva_promesa'){
-      detalle = 'Paga el ' + fmtDate(nuevaFecha) + (comentario ? ' — ' + comentario : '');
+    let msg;
+    if(a==='registrada'){
+      c.registrada = true;
+      Object.assign(c, planDeLlamado(c.fechaPromesa, true));
+      registrar(c,'registrada','Verificar pago el '+fmt(c.fechaLlamado));
+      msg = 'Verificar pago el '+fmtCorto(c.fechaLlamado);
+    } else if(a==='no_contesta'){
+      c.fechaLlamado = sumarHabiles(hoy(), 1);
+      registrar(c,'no_contesta','Volver a llamar el '+fmt(c.fechaLlamado));
+      msg = 'Se reprogramó al '+fmtCorto(c.fechaLlamado);
+    } else if(a==='pago'){
+      c.estado='pagado'; registrar(c,'pago'); msg='Marcado como pagado';
+    } else if(a==='perdido'){
+      c.estado='perdido'; registrar(c,'no_pago'); msg='Marcado como perdido';
     }
-    c.historial.push({fecha: hoy, resultado, comentario: detalle});
+    save(); renderAll(); toast(msg, true);
+  }
 
-    if(resultado === 'nueva_promesa'){
-      c.fechaPromesa = nuevaFecha;
-      c.fechaLlamado = addDays(nuevaFecha, -5);
-      c.estado = 'pendiente';
-    } else if(resultado === 'reagendo'){
-      // misma promesa: se corre el próximo llamado unos días para que no aparezca de nuevo enseguida
-      c.fechaLlamado = addDays(hoy, 3);
-    } else if(resultado === 'agendado_sistema'){
-      c.estado = 'agendado';
-    } else if(resultado === 'pago'){
-      c.estado = 'pagado';
-    } else if(resultado === 'no_pago'){
-      c.estado = 'perdido';
-    } else if(resultado === 'no_contesta'){
-      c.fechaLlamado = addDays(hoy, 1);
-    }
-
-    $('hist_comentario').value = '';
-    $('hist_nuevaFecha').value = '';
-    $('campoNuevaFecha').hidden = true;
-    $('hist_resultado').value = 'no_contesta';
-
-    save();
-    renderDetail();
-    render();
-    toast('Llamado registrado', true);
+  // ---------- Nueva promesa ----------
+  function abrirNuevaPromesa(c){
+    llenarSelectPromesa($('np_sel'), null);
+    $('np_otra').value=''; $('np_coment').value='';
+    actualizarInfo($('np_sel'), $('np_otraField'), $('np_otra'), $('np_info'));
+    overlayPromesa.dataset.id = c.id;
+    overlayPromesa.classList.add('show');
+  }
+  ['change','input'].forEach(ev=>{
+    $('np_sel').addEventListener(ev, ()=>actualizarInfo($('np_sel'), $('np_otraField'), $('np_otra'), $('np_info')));
+    $('np_otra').addEventListener(ev, ()=>actualizarInfo($('np_sel'), $('np_otraField'), $('np_otra'), $('np_info')));
   });
-
-  $('btnEditar').addEventListener('click', ()=>{
-    const c = clientes.find(x=>x.id===currentDetailId);
-    if(!c) return;
-    closeDetail();
-    openForm(c);
-  });
-
-  function cambiarEstado(estado, resultado, mensaje){
-    const c = clientes.find(x=>x.id===currentDetailId);
-    if(!c) return;
+  $('np_guardar').addEventListener('click', ()=>{
+    const c = getC(overlayPromesa.dataset.id); if(!c) return;
+    const fp = leerPromesa($('np_sel'), $('np_otra'));
+    if(!fp){ alert('Elegí la fecha de la promesa.'); return; }
+    if(fp < hoy()){ alert('La promesa no puede ser anterior a hoy.'); return; }
     snapshot();
-    c.estado = estado;
-    c.historial.push({fecha: todayStr(), resultado, comentario: ''});
-    save(); renderDetail(); render();
-    toast(mensaje, true);
-  }
-  $('btnMarcarPago').addEventListener('click', ()=>cambiarEstado('pagado', 'pago', 'Marcado como pagado'));
-  $('btnMarcarPerdido').addEventListener('click', ()=>cambiarEstado('perdido', 'no_pago', 'Marcado como perdido'));
-  $('btnReactivar').addEventListener('click', ()=>cambiarEstado('pendiente', 'reactivado', 'Volvió a pendiente'));
-
-  // ---- Filtros / búsqueda ----
-  $('searchBox').addEventListener('input', render);
-  document.querySelectorAll('.summary .card, .chip').forEach(el=>{
-    el.addEventListener('click', ()=>setFilter(el.dataset.filter));
+    aplicarPromesa(c, fp);
+    c.estado = 'activo';
+    const com = $('np_coment').value.trim();
+    registrar(c,'nueva_promesa',(c.negociada?'Negociada para el ':'Paga el ')+fmt(fp)+(com?' — '+com:''));
+    save(); overlayPromesa.classList.remove('show'); renderAll();
+    toast((c.negociada?'Registrar el ':'Verificar el ')+fmtCorto(c.fechaLlamado), true);
   });
 
-  // ---- Menú / backup ----
-  function renderLastBackup(){
-    let last = null;
-    try{ last = localStorage.getItem(BACKUP_KEY); }catch(e){}
-    $('lastBackup').textContent = last
-      ? 'Último backup exportado: ' + fmtDate(last) + '.'
-      : 'Los datos se guardan solo en este navegador. Exportá un backup cada tanto para no perderlos.';
+  $('btnEditar').addEventListener('click', ()=>{ const c=getC(detalleId); overlayDetail.classList.remove('show'); openForm(c); });
+  $('btnReactivar').addEventListener('click', ()=>{
+    const c=getC(detalleId); if(!c) return;
+    snapshot();
+    c.estado='activo';
+    if(c.fechaLlamado < hoy()) c.fechaLlamado = habilDesde(hoy());
+    registrar(c,'reactivado');
+    save(); renderAll(); toast('Volvió a activo', true);
+  });
+
+  // ---------- Navegación ----------
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click', ()=>{ vista=t.dataset.view; renderAll(); }));
+  document.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click', ()=>{ filtro=ch.dataset.filter; renderClientes(); }));
+  $('searchBox').addEventListener('input', renderClientes);
+  function moverMes(n){
+    const [y,m]=calMes.split('-').map(Number);
+    const d=new Date(y,m-1+n,1);
+    calMes = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    renderCalendario();
   }
-  $('btnMenu').addEventListener('click', ()=>{
-    renderLastBackup();
-    overlayMenu.classList.add('show');
+  $('calPrev').addEventListener('click', ()=>moverMes(-1));
+  $('calNext').addEventListener('click', ()=>moverMes(1));
+  $('calToday').addEventListener('click', ()=>{ calMes=hoy().slice(0,7); calSel=hoy(); renderCalendario(); });
+
+  // ---------- Menú ----------
+  function renderMenu(){
+    let last=null; try{ last=localStorage.getItem(BACKUP_KEY); }catch(e){}
+    $('lastBackup').textContent = last ? 'Último backup exportado: '+fmt(last)+'.' : 'Los datos se guardan solo en este navegador. Exportá un backup cada tanto.';
+    let extra=[]; try{ extra=JSON.parse(localStorage.getItem(FERIADOS_KEY)||'[]'); }catch(e){}
+    $('feriadosExtra').value = extra.map(fmt).join('\n');
+  }
+  $('btnMenu').addEventListener('click', ()=>{ renderMenu(); overlayMenu.classList.add('show'); });
+  $('btnGuardarFeriados').addEventListener('click', ()=>{
+    const lineas = $('feriadosExtra').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+    const out=[]; const malas=[];
+    lineas.forEach(l=>{
+      const m = l.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if(m) out.push(m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0')); else malas.push(l);
+    });
+    if(malas.length){ alert('No entiendo estas fechas (usá DD/MM/AAAA):\n'+malas.join('\n')); return; }
+    try{ localStorage.setItem(FERIADOS_KEY, JSON.stringify(out)); }catch(e){}
+    feriados = new Set(FERIADOS_BASE.concat(out));
+    renderAll(); toast('Feriados guardados');
   });
   $('btnExportar').addEventListener('click', ()=>{
-    if(clientes.length === 0){ toast('No hay clientes para exportar'); return; }
-    try{
-      const blob = new Blob([JSON.stringify(clientes, null, 2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'cartera_clientes_backup_' + todayStr() + '.json';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(()=>URL.revokeObjectURL(url), 2000);
-      try{ localStorage.setItem(BACKUP_KEY, todayStr()); }catch(e){}
-      renderLastBackup();
-      toast('Backup descargado');
-    }catch(e){
-      alert('No se pudo generar el backup: ' + e.message);
-    }
+    if(!clientes.length){ toast('No hay clientes para exportar'); return; }
+    const blob = new Blob([JSON.stringify(clientes,null,2)],{type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href=url; a.download='cartera_clientes_backup_'+hoy()+'.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    try{ localStorage.setItem(BACKUP_KEY, hoy()); }catch(e){}
+    renderMenu(); toast('Backup descargado');
   });
   $('btnImportar').addEventListener('click', ()=>$('fileImportar').click());
-  $('fileImportar').addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    e.target.value = '';
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev)=>{
-      let data;
-      try{ data = JSON.parse(ev.target.result); }
-      catch(err){ alert('No se pudo leer el archivo.'); return; }
+  $('fileImportar').addEventListener('change', e=>{
+    const file=e.target.files[0]; e.target.value=''; if(!file) return;
+    const r=new FileReader();
+    r.onload=ev=>{
+      let data; try{ data=JSON.parse(ev.target.result); }catch(err){ alert('No se pudo leer el archivo.'); return; }
       if(!Array.isArray(data)){ alert('El archivo no tiene el formato esperado.'); return; }
-      if(confirm('Esto va a reemplazar tu cartera actual por el backup importado ('+data.length+' clientes). ¿Continuar?')){
-        snapshot();
-        clientes = normalizarLista(data);
-        save();
-        render();
-        overlayMenu.classList.remove('show');
-        toast('Backup importado', true);
-      }
+      if(!confirm('Esto reemplaza tu cartera actual por el backup ('+data.length+' clientes). ¿Continuar?')) return;
+      snapshot();
+      clientes = data.filter(x=>x&&typeof x==='object').map(normalizar);
+      save(); overlayMenu.classList.remove('show'); renderAll(); toast('Backup importado', true);
     };
-    reader.readAsText(file);
+    r.readAsText(file);
   });
   $('btnBorrarTodo').addEventListener('click', ()=>{
-    if(clientes.length === 0){ toast('La cartera ya está vacía'); return; }
-    if(confirm('Esto borra TODOS los clientes guardados. ¿Estás seguro?')){
-      snapshot();
-      clientes = [];
-      save();
-      render();
-      overlayMenu.classList.remove('show');
-      toast('Cartera borrada', true);
-    }
+    if(!clientes.length){ toast('La cartera ya está vacía'); return; }
+    if(!confirm('Esto borra TODOS los clientes. ¿Estás seguro?')) return;
+    snapshot(); clientes=[]; save(); overlayMenu.classList.remove('show'); renderAll(); toast('Cartera borrada', true);
   });
 
-  // ---- Cerrar overlays ----
-  function cerrarOverlay(ov){
-    ov.classList.remove('show');
-    if(ov === overlayDetail) currentDetailId = null;
-  }
-  document.querySelectorAll('[data-close]').forEach(btn=>{
-    btn.addEventListener('click', ()=>cerrarOverlay(btn.closest('.overlay')));
-  });
-  document.querySelectorAll('.overlay').forEach(ov=>{
-    ov.addEventListener('click', (e)=>{ if(e.target === ov) cerrarOverlay(ov); });
-  });
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape') document.querySelectorAll('.overlay.show').forEach(cerrarOverlay);
-  });
+  // ---------- Cerrar overlays ----------
+  function cerrar(ov){ ov.classList.remove('show'); if(ov===overlayDetail) detalleId=null; }
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>cerrar(b.closest('.overlay'))));
+  document.querySelectorAll('.overlay').forEach(ov=>ov.addEventListener('click', e=>{ if(e.target===ov) cerrar(ov); }));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.querySelectorAll('.overlay.show').forEach(cerrar); });
 
-  const hoyTxt = new Date().toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
-  $('fechaHoy').textContent = hoyTxt.charAt(0).toUpperCase() + hoyTxt.slice(1);
+  // Al volver a la pestaña o cambiar el día, refrescar.
+  let ultimoDia = hoy();
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && hoy()!==ultimoDia){ ultimoDia=hoy(); calMes=null; calSel=null; renderAll(); } });
 
+  $('fechaHoy').textContent = fmtLargo(hoy());
   load();
-  render();
+  renderAll();
 })();
 </script>
 </body>
