@@ -4,6 +4,8 @@ App web para llevar el control de llamados a clientes con promesa de pago (gesti
 
 ## Cómo funciona
 
+- **Buscador arriba de todo:** escribís el DNI o el nombre y la app te dice si es **Negociación** (llamar para registrar la promesa) o **Promesa** (llamar para verificar el pago), y cuándo llamarlo. Si no está cargado, te ofrece cargarlo.
+
 - **Alta de cliente:** nombre y apellido, DNI y fecha de promesa (teléfono, monto y notas son opcionales). El horario del llamado se toma de la hora en que cargás la ficha (editable).
 - **Promesa normal:** se elige de un desplegable con el día de carga y los 4 días hábiles siguientes. La app agenda un llamado para **verificar el pago** el día hábil siguiente al vencimiento.
 - **Promesa negociada:** si el cliente da una fecha posterior, se carga igual con "Otra fecha". La app agenda el llamado para el **primer día hábil en que el sistema ya permite registrarla** (ese día + 4 hábiles llega a la fecha prometida); al marcarla como registrada, pasa a agendarse la verificación del pago.

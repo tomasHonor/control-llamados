@@ -322,6 +322,29 @@
   .stat.g .num{color:var(--green);} .stat.b .num{color:var(--accent);} .stat.v .num{color:var(--violet);} .stat.r .num{color:var(--red);}
   .bar{height:10px; border-radius:6px; background:var(--panel2); overflow:hidden; margin-top:10px;}
   .bar i{display:block; height:100%; background:var(--green); border-radius:6px;}
+
+  /* Buscador por DNI */
+  .finder{position:relative; margin-bottom:14px;}
+  .finder input{
+    width:100%; border:2px solid transparent; background:var(--panel); color:var(--text); box-shadow:var(--soft);
+    border-radius:18px; padding:15px 16px 15px 46px; font-size:16px; font-weight:600;
+  }
+  .finder input:focus{outline:none; border-color:var(--accent);}
+  .finder .lupa{position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:18px; opacity:.6; pointer-events:none;}
+  .finder-res{display:flex; flex-direction:column; gap:10px; margin-bottom:16px;}
+  .verdict{background:var(--panel); border-radius:20px; padding:16px; box-shadow:var(--shadow); cursor:pointer; border-left:6px solid var(--border);}
+  .verdict.v-registrar{border-left-color:var(--violet);}
+  .verdict.v-verificar{border-left-color:var(--blue);}
+  .verdict.v-cerrado{border-left-color:var(--green);}
+  .verdict .who{font-size:13px; color:var(--muted); font-weight:600;}
+  .verdict .tipo{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; margin-top:8px;}
+  .verdict.v-registrar .tipo{color:var(--violet);} .verdict.v-verificar .tipo{color:var(--blue);} .verdict.v-cerrado .tipo{color:var(--green);}
+  .verdict .que{font-size:19px; font-weight:800; margin-top:4px; line-height:1.25;}
+  .verdict .cuando{font-size:14px; margin-top:6px; color:var(--text);}
+  .verdict .cuando b{font-weight:800;}
+  .verdict .cuando .badge{margin-left:4px;}
+  .verdict.nuevo{border-left-color:var(--accent); cursor:default;}
+  .verdict.nuevo .btn{margin-top:12px;}
 </style>
 </head>
 <body>
@@ -333,6 +356,12 @@
     </div>
     <button class="icon-btn" id="btnMenu" aria-label="Opciones">⋮</button>
   </header>
+
+  <div class="finder">
+    <span class="lupa">🔎</span>
+    <input type="search" id="finder" placeholder="Buscar DNI o nombre: ¿lo tengo que llamar?" autocomplete="off" inputmode="search">
+  </div>
+  <div class="finder-res" id="finderRes" hidden></div>
 
   <nav class="tabs">
     <button class="tab" data-view="hoy">Hoy<span class="n" id="tabHoyN" hidden></span></button>
@@ -347,7 +376,7 @@
     <div class="banner" id="bannerNotif" hidden><span>🔔 Activá los recordatorios para que te avise a la hora de cada llamado.</span><button id="bannerNotifBtn">Activar</button></div>
     <div class="summary">
       <div class="card c-red"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></div>
-      <div class="card c-violet"><div class="num" id="cntRegistrar">0</div><div class="lbl">A registrar</div></div>
+      <div class="card c-violet"><div class="num" id="cntRegistrar">0</div><div class="lbl">Negociaciones</div></div>
       <div class="card c-blue"><div class="num" id="cntActivos">0</div><div class="lbl">Activos</div></div>
     </div>
     <div id="hoyList"></div>
@@ -388,8 +417,8 @@
     <input type="text" class="search" id="searchBox" placeholder="Buscar por DNI, nombre o teléfono…">
     <div class="chips" id="chips">
       <button class="chip" data-filter="activos">Activos</button>
-      <button class="chip" data-filter="registrar">A registrar</button>
-      <button class="chip" data-filter="verificar">A verificar pago</button>
+      <button class="chip" data-filter="registrar">Negociaciones</button>
+      <button class="chip" data-filter="verificar">Promesas</button>
       <button class="chip" data-filter="pagado">Pagaron</button>
       <button class="chip" data-filter="perdido">Perdidos</button>
       <button class="chip" data-filter="todos">Todos</button>
@@ -703,7 +732,8 @@
   function digitos(s){ return (s||'').replace(/\D/g,''); }
   function waNumero(t){ let d=digitos(t).replace(/^0+/,''); if(d.length<=10) d='549'+d; return d; }
   function money(m){ return m===''||m==null ? '' : '$ '+Number(m).toLocaleString('es-AR',{maximumFractionDigits:2}); }
-  function motivoLabel(m){ return m==='registrar' ? 'Registrar promesa' : 'Verificar pago'; }
+  function motivoLabel(m){ return m==='registrar' ? 'Negociación' : 'Promesa'; }
+  function accionLabel(m){ return m==='registrar' ? 'Llamar para registrar la promesa' : 'Llamar para verificar el pago'; }
 
   function snapshot(){ undoSnap = JSON.stringify(clientes); }
   function toast(msg, deshacer){
@@ -744,7 +774,7 @@
       </div>
       ${rapidas ? `<div class="quick">${c.motivo==='registrar'
         ? '<button class="q-ok" data-q="registrada">✅ Registrada</button><button data-q="copiar">📋 Copiar</button><button data-q="no_contesta">📵 No contesta</button>'
-        : '<button class="q-ok" data-q="pago">💰 Pagó</button><button data-q="nueva">📅 Promesa</button><button data-q="no_contesta">📵 No contesta</button>'}</div>` : ''}`;
+        : '<button class="q-ok" data-q="pago">💰 Pagó</button><button data-q="nueva">📅 Nueva fecha</button><button data-q="no_contesta">📵 No contesta</button>'}</div>` : ''}`;
     div.addEventListener('click', e=>{
       const q = e.target.closest('[data-q]');
       if(q){ e.stopPropagation(); q.dataset.q==='copiar' ? copiarSistema(c) : accion(c.id, q.dataset.q); return; }
@@ -883,6 +913,7 @@
     if(vista==='calendario') renderCalendario();
     if(vista==='clientes') renderClientes();
     if(vista==='resumen') renderResumen();
+    if($('finder').value.trim()) renderFinder();
     if(detalleId && $('overlayDetail').classList.contains('show')) renderDetail();
   }
 
@@ -991,7 +1022,7 @@
       const explic = c.motivo==='registrar'
         ? `Promesa negociada para el ${fmt(c.fechaPromesa)}. Ese día ya se puede registrar en el sistema.`
         : `Promesa ${c.fechaPromesa<hoy()?'vencida':'que vence'} el ${fmt(c.fechaPromesa)}. Llamá para confirmar si pagó.`;
-      p.innerHTML = `<div class="t">Próximo llamado · ${motivoLabel(c.motivo)}</div>
+      p.innerHTML = `<div class="t">${motivoLabel(c.motivo)} · ${accionLabel(c.motivo)}</div>
         <div class="v">${esc(fmtLargo(c.fechaLlamado))} · ${esc(c.hora)} <span class="badge ${d<0?'atrasado':d===0?'hoy':'futuro'}">${esc(relativo(c.fechaLlamado))}</span></div>
         <div class="m">${esc(explic)}</div>`;
       p.hidden = false;
@@ -1071,6 +1102,57 @@
     }
     save(); renderAll(); toast(msg, true);
   }
+
+  // ---------- Buscador: ¿lo tengo que llamar? ----------
+  function veredicto(c){
+    const div=document.createElement('div');
+    if(c.estado!=='activo'){
+      div.className='verdict v-cerrado';
+      div.innerHTML=`<div class="who">${esc(c.nombre)} · DNI ${esc(c.dni)}</div>
+        <div class="tipo">Caso cerrado</div>
+        <div class="que">${c.estado==='pagado'?'💰 Ya pagó':'🚫 No va a pagar'}</div>
+        <div class="cuando">No hace falta llamarlo. Promesa del ${esc(fmt(c.fechaPromesa))}.</div>`;
+    } else {
+      const d=diasEntre(hoy(),c.fechaLlamado);
+      const cuando = d<0 ? `<b>Llamalo hoy</b> — estaba para el ${esc(fmtCorto(c.fechaLlamado))} <span class="badge atrasado">Atrasado ${-d}d</span>`
+        : d===0 ? `<b>Llamalo hoy a las ${esc(c.hora)}</b> <span class="badge hoy">Hoy</span>`
+        : `Todavía no. <b>Llamalo el ${esc(fmtLargo(c.fechaLlamado).toLowerCase())} a las ${esc(c.hora)}</b> <span class="badge futuro">${esc(relativo(c.fechaLlamado))}</span>`;
+      const detalle = c.motivo==='registrar'
+        ? `Negoció pagar el ${fmt(c.fechaPromesa)}: ese día ya se puede registrar en el sistema.`
+        : `Prometió pagar el ${fmt(c.fechaPromesa)}.`;
+      div.className='verdict v-'+c.motivo;
+      div.innerHTML=`<div class="who">${esc(c.nombre)} · DNI ${esc(c.dni)}</div>
+        <div class="tipo">${motivoLabel(c.motivo)}</div>
+        <div class="que">${c.motivo==='registrar'?'📌':'📞'} ${accionLabel(c.motivo)}</div>
+        <div class="cuando">${cuando}</div>
+        <div class="hint">${esc(detalle)}${intentos(c)?' · '+intentos(c)+' sin respuesta':''}</div>`;
+    }
+    div.addEventListener('click', ()=>openDetail(c.id));
+    return div;
+  }
+  function renderFinder(){
+    const q=$('finder').value.trim(), ql=q.toLowerCase(), qd=digitos(q);
+    const res=$('finderRes');
+    if(q.length<2){ res.hidden=true; res.innerHTML=''; return; }
+    const encontrados = clientes.filter(c=> (qd && qd.length>=2 && digitos(c.dni).includes(qd)) || (!qd && c.nombre.toLowerCase().includes(ql)))
+      .sort((a,b)=>(a.estado==='activo'?0:1)-(b.estado==='activo'?0:1) || ordenLlamado(a,b)).slice(0,5);
+    res.innerHTML=''; res.hidden=false;
+    encontrados.forEach(c=>res.appendChild(veredicto(c)));
+    if(!encontrados.length){
+      const div=document.createElement('div'); div.className='verdict nuevo';
+      div.innerHTML=`<div class="tipo" style="color:var(--accent)">No está cargado</div>
+        <div class="que">No tenés a ${qd?'ese DNI':'nadie con ese nombre'} en la cartera</div>
+        <button class="btn primary">+ Cargar cliente${qd?' con DNI '+esc(qd):''}</button>`;
+      div.querySelector('button').addEventListener('click', ()=>{
+        openForm(null);
+        if(qd) $('f_dni').value=qd; else $('f_nombre').value=q;
+        setTimeout(()=>$(qd?'f_nombre':'f_dni').focus(),60);
+      });
+      res.appendChild(div);
+    }
+  }
+  $('finder').addEventListener('input', renderFinder);
+  $('finder').addEventListener('keydown', e=>{ if(e.key==='Escape'){ e.target.value=''; renderFinder(); } });
 
   // ---------- Copiar / WhatsApp ----------
   function mensajeWA(c){
@@ -1156,7 +1238,7 @@
       const m=minutos(c.hora);
       if(notificados[key] || ahora<m || ahora-m>15) return;
       notificados[key]=1;
-      const txt = c.nombre+' · '+motivoLabel(c.motivo)+' · '+c.hora;
+      const txt = c.nombre+' · '+accionLabel(c.motivo).toLowerCase()+' · '+c.hora;
       if('Notification' in window && Notification.permission==='granted'){
         try{
           const n = new Notification('📞 Llamar ahora', {body:txt, tag:key});
