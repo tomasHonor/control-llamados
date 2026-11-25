@@ -548,7 +548,6 @@
   const BACKUP_KEY = 'cartera_ultimo_backup';
   const FERIADOS_KEY = 'cartera_feriados_extra';
   const DIAS_PROMESA = 4;       // hoy + 4 días hábiles
-  const HABILES_ANTES = 5;      // promesa negociada: llamar 5 hábiles antes para registrarla
 
   // Feriados nacionales de Argentina (inamovibles, trasladables y puentes turísticos).
   const FERIADOS_BASE = [
@@ -615,11 +614,17 @@
   // ---------- Reglas de llamado ----------
   // Promesa dentro de la ventana (hoy + 4 hábiles): se registra en el sistema y se llama
   // el día hábil siguiente al vencimiento para verificar el pago.
-  // Promesa negociada (más lejos): se llama 5 hábiles antes para registrarla en el sistema.
+  // Promesa negociada (más lejos): se llama el primer día hábil en que el sistema ya permite
+  // registrarla, es decir, el primer día hábil cuyo plazo (ese día + 4 hábiles) llega a la fecha.
   function esNegociada(fechaPromesa){ return fechaPromesa > limitePromesa(); }
+  function primerDiaParaRegistrar(fechaPromesa){
+    let d = sumarHabiles(fechaPromesa, -(DIAS_PROMESA+2));
+    while(sumarHabiles(d, DIAS_PROMESA) < fechaPromesa) d = sumarHabiles(d, 1);
+    return d;
+  }
   function planDeLlamado(fechaPromesa, registrada){
     if(!registrada){
-      const f = sumarHabiles(fechaPromesa, -HABILES_ANTES);
+      const f = primerDiaParaRegistrar(fechaPromesa);
       return {fechaLlamado: f < hoy() ? habilDesde(hoy()) : f, motivo:'registrar'};
     }
     return {fechaLlamado: sumarHabiles(fechaPromesa, 1), motivo:'verificar'};
@@ -633,7 +638,7 @@
   function textoPlan(fechaPromesa){
     if(esNegociada(fechaPromesa)){
       const p = planDeLlamado(fechaPromesa,false);
-      return {neg:true, html:`<b>Promesa negociada.</b> Todavía no se puede registrar en el sistema. Te agendo un llamado el <b>${fmtCorto(p.fechaLlamado)}</b> (5 días hábiles antes) para registrarla.`};
+      return {neg:true, html:`<b>Promesa negociada.</b> Todavía no se puede registrar en el sistema. Te agendo un llamado el <b>${fmtCorto(p.fechaLlamado)}</b> para registrarla: es el primer día hábil en que el sistema te deja cargarla.`};
     }
     const p = planDeLlamado(fechaPromesa,true);
     if(p.fechaLlamado < hoy())
@@ -660,6 +665,9 @@
     if(typeof x.registrada === 'boolean' && x.fechaLlamado && x.motivo){
       c.registrada = x.registrada; c.negociada = !!x.negociada;
       c.fechaLlamado = x.fechaLlamado; c.motivo = x.motivo;
+      if(c.estado==='activo' && c.motivo==='registrar' && c.fechaLlamado===sumarHabiles(c.fechaPromesa,-5)){
+        c.fechaLlamado = planDeLlamado(c.fechaPromesa,false).fechaLlamado;
+      }
     } else {
       // Datos de la versión anterior
       if(x.estado==='pagado' || x.estado==='perdido') c.estado = x.estado;
