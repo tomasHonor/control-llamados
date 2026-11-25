@@ -586,13 +586,15 @@
   }
   function habilDesde(s){ let d=s; while(!esHabil(d)) d=addDays(d,1); return d; }
   function diasEntre(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
+  // Todos los días desde hoy hasta el 4.º día hábil, incluidos sábados, domingos y feriados
+  // (el cliente puede pagar esos días aunque no sean hábiles).
   function opcionesPromesa(){
-    const base = habilDesde(hoy());
-    const out=[base];
-    for(let i=1;i<=DIAS_PROMESA;i++) out.push(sumarHabiles(base,i));
+    const fin = limitePromesa();
+    const out=[];
+    for(let d=hoy(); d<=fin; d=addDays(d,1)) out.push(d);
     return out;
   }
-  function limitePromesa(){ const o=opcionesPromesa(); return o[o.length-1]; }
+  function limitePromesa(){ return sumarHabiles(habilDesde(hoy()), DIAS_PROMESA); }
 
   const DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
   function fmt(s){ if(!s) return '—'; const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y; }
@@ -876,7 +878,7 @@
   // ---------- Selector de promesa (reutilizable) ----------
   function llenarSelectPromesa(sel, actual){
     const ops = opcionesPromesa();
-    sel.innerHTML = ops.map((f,i)=>`<option value="${f}">${fmtCorto(f)}${i===0?' (hoy)':''}${i===ops.length-1?' · último día':''}</option>`).join('')
+    sel.innerHTML = ops.map((f,i)=>`<option value="${f}">${fmtCorto(f)}${i===0?' (hoy)':''}${!esHabil(f)?(esFeriado(f)?' · feriado':' · no hábil'):''}${i===ops.length-1?' · último día':''}</option>`).join('')
       + '<option value="otra">Otra fecha (negociada)…</option>';
     if(actual && ops.includes(actual)) sel.value = actual;
     else if(actual){ sel.value = 'otra'; }
