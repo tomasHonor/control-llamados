@@ -12,6 +12,16 @@ App web para llevar el control de llamados a clientes con promesa de pago (gesti
 - **Calendario:** vista mensual con la cantidad de llamados por día; al tocar un día se ve el detalle.
 - **Resultado de cada llamado:** registrada, pagó, no contesta (pasa al próximo día hábil), nueva promesa o no va a pagar. Todo queda en el historial y se puede deshacer.
 
+## Herramientas para el día a día
+
+- **Botones rápidos** en la lista de Hoy: pagó, nueva promesa, no contesta, registrada y copiar, sin abrir la ficha.
+- **Recordatorios** a la hora de cada llamado (notificación del navegador, mientras la app esté abierta).
+- **Copiar para el sistema:** copia "DNI - nombre - promesa - monto" para pegar en el sistema de la empresa.
+- **Intentos sin respuesta:** muestra cuántas veces seguidas no contestó y sugiere WhatsApp o cerrar el caso a partir de 3.
+- **WhatsApp con mensaje armado** según el estado de la promesa.
+- **Resumen** del día, la semana y el mes: llamados, contactados, pagos, monto recuperado y estado de la cartera.
+- **Aviso de backup** si pasan 7 días sin exportar.
+
 ## Cómo se guardan los datos
 
 Los datos se guardan en el `localStorage` del navegador donde se abre la app (no hay backend). Usá el botón de exportar backup para no perder la información si cambiás de navegador o PC.

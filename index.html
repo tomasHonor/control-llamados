@@ -292,6 +292,36 @@
   .section-title{text-transform:none; letter-spacing:0; font-size:15px; color:var(--text); font-weight:800;}
   .detail-section h3{text-transform:none; letter-spacing:0; font-size:15px; color:var(--text);}
   .empty .big{font-size:42px;}
+
+  /* Productividad */
+  .tabs{grid-template-columns:repeat(4,1fr);}
+  .tab{font-size:13.5px; padding:10px 2px;}
+  .item{flex-wrap:wrap;}
+  .quick{flex-basis:100%; display:flex; gap:6px; margin-top:4px;}
+  .quick button{white-space:nowrap;
+    flex:1; border:none; border-radius:12px; padding:8px 4px; font-size:12.5px; font-weight:700; cursor:pointer;
+    background:var(--panel2); color:var(--text);
+  }
+  .quick button:hover{background:var(--hover);}
+  .quick .q-ok{background:var(--green-bg); color:var(--green);}
+  .badge.intentos{background:var(--grey-bg); color:var(--muted);}
+  .banner{
+    display:flex; align-items:center; gap:10px; background:var(--amber-bg); color:var(--text);
+    border-radius:16px; padding:12px 14px; margin-bottom:14px; font-size:13.5px; line-height:1.4;
+  }
+  .banner span{flex:1;}
+  .banner button{
+    flex:none; border:none; border-radius:12px; padding:8px 12px; font-weight:700; font-size:13px; cursor:pointer;
+    background:var(--amber); color:#fff;
+  }
+  .stats{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .stat{background:var(--panel); border-radius:18px; padding:14px 16px; box-shadow:var(--soft);}
+  .stat .num{font-size:26px; font-weight:800; line-height:1.1;}
+  .stat .lbl{font-size:12.5px; color:var(--muted); margin-top:4px;}
+  .stat.wide{grid-column:1 / -1;}
+  .stat.g .num{color:var(--green);} .stat.b .num{color:var(--accent);} .stat.v .num{color:var(--violet);} .stat.r .num{color:var(--red);}
+  .bar{height:10px; border-radius:6px; background:var(--panel2); overflow:hidden; margin-top:10px;}
+  .bar i{display:block; height:100%; background:var(--green); border-radius:6px;}
 </style>
 </head>
 <body>
@@ -308,10 +338,13 @@
     <button class="tab" data-view="hoy">Hoy<span class="n" id="tabHoyN" hidden></span></button>
     <button class="tab" data-view="calendario">Calendario</button>
     <button class="tab" data-view="clientes">Clientes</button>
+    <button class="tab" data-view="resumen">Resumen</button>
   </nav>
 
   <!-- Vista: Hoy -->
   <section id="viewHoy">
+    <div class="banner" id="bannerBackup" hidden><span id="bannerBackupTxt"></span><button id="bannerBackupBtn">Exportar</button></div>
+    <div class="banner" id="bannerNotif" hidden><span>🔔 Activá los recordatorios para que te avise a la hora de cada llamado.</span><button id="bannerNotifBtn">Activar</button></div>
     <div class="summary">
       <div class="card c-red"><div class="num" id="cntHoy">0</div><div class="lbl">Llamar hoy</div></div>
       <div class="card c-violet"><div class="num" id="cntRegistrar">0</div><div class="lbl">A registrar</div></div>
@@ -336,6 +369,18 @@
     </div>
     <div class="section-title" id="calDayTitle"></div>
     <div class="list" id="calDayList"></div>
+  </section>
+
+  <!-- Vista: Resumen -->
+  <section id="viewResumen" hidden>
+    <div class="chips" id="periodos">
+      <button class="chip" data-periodo="dia">Hoy</button>
+      <button class="chip" data-periodo="semana">Esta semana</button>
+      <button class="chip" data-periodo="mes">Este mes</button>
+    </div>
+    <div class="stats" id="statsPeriodo"></div>
+    <div class="section-title">Tu cartera ahora</div>
+    <div class="stats" id="statsCartera"></div>
   </section>
 
   <!-- Vista: Clientes -->
@@ -421,6 +466,7 @@
       <a class="btn ghost" id="btnWhatsapp" target="_blank" rel="noopener">💬 WhatsApp</a>
     </div>
 
+    <div class="info-box neg" id="detSugerencia" hidden></div>
     <div id="detAcciones"></div>
 
     <div class="detail-section">
@@ -428,6 +474,7 @@
       <div class="det-grid" id="detDatos"></div>
       <div class="det-notas" id="detNotas"></div>
       <div class="btn-row">
+        <button class="btn ghost" id="btnCopiar">📋 Copiar para el sistema</button>
         <button class="btn ghost" id="btnEditar">✏️ Editar</button>
         <button class="btn ghost" id="btnReactivar" hidden>↩️ Volver a activo</button>
       </div>
@@ -471,6 +518,12 @@
     <button class="btn ghost" id="btnExportar">⬇️ Exportar backup (JSON)</button>
     <button class="btn ghost" id="btnImportar">⬆️ Importar backup</button>
     <input type="file" id="fileImportar" accept=".json,application/json" hidden>
+
+    <div class="detail-section">
+      <h3>Recordatorios</h3>
+      <div class="hint" id="notifEstado" style="margin-bottom:6px;"></div>
+      <button class="btn ghost" id="btnNotif">🔔 Activar recordatorios</button>
+    </div>
 
     <div class="detail-section">
       <h3>Feriados extra</h3>
@@ -655,7 +708,12 @@
   });
 
   // ---------- Render ----------
-  function itemLlamado(c, mostrarFecha){
+  function intentos(c){
+    let n=0;
+    for(let i=c.historial.length-1;i>=0;i--){ if(c.historial[i].resultado==='no_contesta') n++; else break; }
+    return n;
+  }
+  function itemLlamado(c, mostrarFecha, rapidas){
     const d = diasEntre(hoy(), c.fechaLlamado);
     const k = d<0 ? 'atrasado' : d===0 ? 'hoy' : d<=7 ? 'semana' : 'futuro';
     const div = document.createElement('div');
@@ -669,8 +727,16 @@
       <div class="item-right">
         <span class="badge ${c.motivo}">${motivoLabel(c.motivo)}</span>
         ${d<0 ? `<span class="badge atrasado">Atrasado ${-d}d</span>` : ''}
-      </div>`;
-    div.addEventListener('click', ()=>openDetail(c.id));
+        ${intentos(c) ? `<span class="badge intentos">📵 ${intentos(c)} sin respuesta</span>` : ''}
+      </div>
+      ${rapidas ? `<div class="quick">${c.motivo==='registrar'
+        ? '<button class="q-ok" data-q="registrada">✅ Registrada</button><button data-q="copiar">📋 Copiar</button><button data-q="no_contesta">📵 No contesta</button>'
+        : '<button class="q-ok" data-q="pago">💰 Pagó</button><button data-q="nueva">📅 Promesa</button><button data-q="no_contesta">📵 No contesta</button>'}</div>` : ''}`;
+    div.addEventListener('click', e=>{
+      const q = e.target.closest('[data-q]');
+      if(q){ e.stopPropagation(); q.dataset.q==='copiar' ? copiarSistema(c) : accion(c.id, q.dataset.q); return; }
+      openDetail(c.id);
+    });
     return div;
   }
 
@@ -685,16 +751,23 @@
     $('tabHoyN').textContent = delDia.length;
 
     const cont = $('hoyList'); cont.innerHTML='';
+    const ub = ultimoBackup();
+    const faltaBackup = clientes.length && (!ub || diasEntre(ub, h) >= 7);
+    $('bannerBackup').hidden = !faltaBackup;
+    if(faltaBackup) $('bannerBackupTxt').textContent = ub
+      ? '💾 Hace '+diasEntre(ub,h)+' días que no exportás un backup.'
+      : '💾 Todavía no exportaste ningún backup de tus clientes.';
+    $('bannerNotif').hidden = !('Notification' in window) || Notification.permission!=='default' || !act.length;
     const atrasados = delDia.filter(c=>c.fechaLlamado<h);
     const deHoy = delDia.filter(c=>c.fechaLlamado===h);
     const proximo = sumarHabiles(h,1);
     const manana = act.filter(c=>c.fechaLlamado>h && c.fechaLlamado<=proximo).sort(ordenLlamado);
 
-    function bloque(titulo, lista, conFecha){
+    function bloque(titulo, lista, conFecha, rapidas){
       if(!lista.length) return;
       const t=document.createElement('div'); t.className='section-title'; t.textContent=titulo; cont.appendChild(t);
       const l=document.createElement('div'); l.className='list';
-      lista.forEach(c=>l.appendChild(itemLlamado(c,conFecha)));
+      lista.forEach(c=>l.appendChild(itemLlamado(c,conFecha,rapidas)));
       cont.appendChild(l);
     }
     if(!clientes.length){
@@ -706,8 +779,8 @@
       t.textContent = (esFeriado(h)?'Hoy es feriado.':'Hoy no es día hábil.')+' El próximo día hábil es '+fmtLargo(habilDesde(h)).toLowerCase()+'.';
       cont.appendChild(t);
     }
-    bloque('Atrasados', atrasados, true);
-    bloque('Hoy · '+deHoy.length+(deHoy.length===1?' llamado':' llamados'), deHoy, false);
+    bloque('Atrasados', atrasados, true, true);
+    bloque('Hoy · '+deHoy.length+(deHoy.length===1?' llamado':' llamados'), deHoy, false, true);
     if(!atrasados.length && !deHoy.length){
       cont.insertAdjacentHTML('beforeend','<div class="empty"><div class="big">🎉</div>¡Todo al día! No tenés llamados pendientes para hoy.</div>');
     }
@@ -792,9 +865,11 @@
     $('viewHoy').hidden = vista!=='hoy';
     $('viewCalendario').hidden = vista!=='calendario';
     $('viewClientes').hidden = vista!=='clientes';
+    $('viewResumen').hidden = vista!=='resumen';
     renderHoy();
     if(vista==='calendario') renderCalendario();
     if(vista==='clientes') renderClientes();
+    if(vista==='resumen') renderResumen();
     if(detalleId && $('overlayDetail').classList.contains('show')) renderDetail();
   }
 
@@ -913,7 +988,10 @@
 
     const tel = digitos(c.telefono);
     $('detContacto').hidden = !tel;
-    if(tel){ $('btnLlamar').href='tel:'+tel; $('btnWhatsapp').href='https://wa.me/'+waNumero(c.telefono); }
+    if(tel){ $('btnLlamar').href='tel:'+tel; $('btnWhatsapp').href='https://wa.me/'+waNumero(c.telefono)+'?text='+encodeURIComponent(mensajeWA(c)); }
+    const n = intentos(c);
+    $('detSugerencia').hidden = !(c.estado==='activo' && n>=3);
+    if(n>=3) $('detSugerencia').innerHTML = `<b>${n} llamados sin respuesta.</b> ${tel?'Probá escribirle por WhatsApp o ':''}evaluá marcarlo como "No va a pagar".`;
 
     const acc = $('detAcciones');
     if(c.estado!=='activo'){ acc.innerHTML=''; }
@@ -981,6 +1059,115 @@
     save(); renderAll(); toast(msg, true);
   }
 
+  // ---------- Copiar / WhatsApp ----------
+  function mensajeWA(c){
+    const nom = c.nombre.split(/\s+/)[0];
+    const monto = c.monto!=='' ? ' de '+money(c.monto) : '';
+    if(c.motivo==='registrar')
+      return `Hola ${nom}, ¿cómo estás? Te escribo por tu compromiso de pago${monto} para el ${fmt(c.fechaPromesa)}. ¿Lo confirmamos así lo dejo registrado?`;
+    if(c.fechaPromesa < hoy())
+      return `Hola ${nom}, ¿cómo estás? Te escribo para confirmar el pago${monto} que habías comprometido para el ${fmt(c.fechaPromesa)}. ¿Pudiste realizarlo?`;
+    return `Hola ${nom}, ¿cómo estás? Te recuerdo tu compromiso de pago${monto} para el ${fmt(c.fechaPromesa)}. ¡Cualquier cosa avisame!`;
+  }
+  function textoSistema(c){
+    return `DNI ${c.dni} - ${c.nombre} - Promesa ${fmt(c.fechaPromesa)}`+(c.monto!==''?' - '+money(c.monto):'');
+  }
+  function copiarSistema(c){
+    const t = textoSistema(c);
+    const ok = ()=>toast('Copiado: '+t.slice(0,40)+(t.length>40?'…':''));
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(t).then(ok, ()=>copiaManual(t) && ok());
+    } else if(copiaManual(t)) ok();
+  }
+  function copiaManual(t){
+    const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    ta.remove();
+    if(!ok) prompt('Copiá este texto:', t);
+    return ok;
+  }
+  $('btnCopiar').addEventListener('click', ()=>{ const c=getC(detalleId); if(c) copiarSistema(c); });
+
+  // ---------- Resumen ----------
+  let periodo = 'dia';
+  const LLAMADOS = ['registrada','no_contesta','nueva_promesa','pago','no_pago'];
+  function inicioPeriodo(p){
+    const h=hoy();
+    if(p==='dia') return h;
+    if(p==='semana'){ const w=(parse(h).getDay()+6)%7; return addDays(h,-w); }
+    return h.slice(0,8)+'01';
+  }
+  function renderResumen(){
+    document.querySelectorAll('[data-periodo]').forEach(b=>b.classList.toggle('active', b.dataset.periodo===periodo));
+    const desde=inicioPeriodo(periodo), h=hoy();
+    let llamados=0, contactados=0, pagos=0, cobrado=0, promesas=0, registradas=0;
+    clientes.forEach(c=>c.historial.forEach(ev=>{
+      if(ev.fecha<desde || ev.fecha>h) return;
+      if(LLAMADOS.includes(ev.resultado)){ llamados++; if(ev.resultado!=='no_contesta') contactados++; }
+      if(ev.resultado==='pago'){ pagos++; if(c.monto!=='') cobrado+=c.monto; }
+      if(ev.resultado==='alta' || ev.resultado==='nueva_promesa') promesas++;
+      if(ev.resultado==='registrada') registradas++;
+    }));
+    const efect = llamados ? Math.round(contactados*100/llamados) : 0;
+    $('statsPeriodo').innerHTML = `
+      <div class="stat b"><div class="num">${llamados}</div><div class="lbl">Llamados registrados</div></div>
+      <div class="stat"><div class="num">${efect}%</div><div class="lbl">Contactados (${contactados})</div></div>
+      <div class="stat g"><div class="num">${pagos}</div><div class="lbl">Pagaron</div></div>
+      <div class="stat g"><div class="num">${cobrado?money(cobrado):'—'}</div><div class="lbl">Monto recuperado</div></div>
+      <div class="stat v"><div class="num">${promesas}</div><div class="lbl">Promesas tomadas</div></div>
+      <div class="stat v"><div class="num">${registradas}</div><div class="lbl">Registradas en sistema</div></div>`;
+    const act=activos();
+    const enGestion = act.reduce((t,c)=>t+(c.monto!==''?c.monto:0),0);
+    const cerrados = clientes.filter(c=>c.estado!=='activo');
+    const tasa = cerrados.length ? Math.round(clientes.filter(c=>c.estado==='pagado').length*100/cerrados.length) : 0;
+    $('statsCartera').innerHTML = `
+      <div class="stat b"><div class="num">${act.length}</div><div class="lbl">Clientes activos</div></div>
+      <div class="stat r"><div class="num">${act.filter(c=>c.fechaLlamado<h).length}</div><div class="lbl">Llamados atrasados</div></div>
+      <div class="stat v"><div class="num">${act.filter(c=>c.motivo==='registrar').length}</div><div class="lbl">Promesas a registrar</div></div>
+      <div class="stat"><div class="num">${enGestion?money(enGestion):'—'}</div><div class="lbl">Monto en gestión</div></div>
+      <div class="stat wide g"><div class="num">${tasa}%</div><div class="lbl">De los casos cerrados, pagaron ${clientes.filter(c=>c.estado==='pagado').length} de ${cerrados.length}</div><div class="bar"><i style="width:${tasa}%"></i></div></div>`;
+  }
+  document.querySelectorAll('[data-periodo]').forEach(b=>b.addEventListener('click', ()=>{ periodo=b.dataset.periodo; renderResumen(); }));
+
+  // ---------- Recordatorios ----------
+  const NOTIF_KEY = 'cartera_notificados';
+  let notificados = {};
+  try{ notificados = JSON.parse(localStorage.getItem(NOTIF_KEY)||'{}'); }catch(e){}
+  function minutos(hhmm){ const [a,b]=hhmm.split(':').map(Number); return a*60+b; }
+  function revisarRecordatorios(){
+    const h=hoy(), ahora=minutos(horaActual());
+    if(notificados._dia!==h) notificados={_dia:h};
+    activos().filter(c=>c.fechaLlamado===h).forEach(c=>{
+      const key=c.id+'@'+c.hora;
+      const m=minutos(c.hora);
+      if(notificados[key] || ahora<m || ahora-m>15) return;
+      notificados[key]=1;
+      const txt = c.nombre+' · '+motivoLabel(c.motivo)+' · '+c.hora;
+      if('Notification' in window && Notification.permission==='granted'){
+        try{
+          const n = new Notification('📞 Llamar ahora', {body:txt, tag:key});
+          n.onclick = ()=>{ window.focus(); openDetail(c.id); n.close(); };
+        }catch(e){}
+      }
+      toast('📞 Llamar ahora: '+txt);
+    });
+    try{ localStorage.setItem(NOTIF_KEY, JSON.stringify(notificados)); }catch(e){}
+  }
+  function estadoNotif(){
+    if(!('Notification' in window)) return 'Este navegador no permite notificaciones; igual te aviso con un mensaje en pantalla mientras la app esté abierta.';
+    if(Notification.permission==='granted') return '✅ Activados. Te aviso a la hora de cada llamado mientras la app esté abierta (puede estar en segundo plano).';
+    if(Notification.permission==='denied') return 'Bloqueaste las notificaciones. Habilitalas desde la configuración del navegador para este sitio.';
+    return 'Te aviso a la hora de cada llamado mientras la app esté abierta.';
+  }
+  function pedirNotif(){
+    if(!('Notification' in window)){ toast('Este navegador no permite notificaciones'); return; }
+    Notification.requestPermission().then(()=>{ renderAll(); renderMenu(); toast(Notification.permission==='granted'?'Recordatorios activados':'No se activaron los recordatorios'); });
+  }
+  $('btnNotif').addEventListener('click', pedirNotif);
+  $('bannerNotifBtn').addEventListener('click', pedirNotif);
+  setInterval(revisarRecordatorios, 20000);
+
   // ---------- Nueva promesa ----------
   function abrirNuevaPromesa(c){
     llenarSelectPromesa($('np_sel'), null);
@@ -1037,6 +1224,8 @@
     $('lastBackup').textContent = last ? 'Último backup exportado: '+fmt(last)+'.' : 'Los datos se guardan solo en este navegador. Exportá un backup cada tanto.';
     let extra=[]; try{ extra=JSON.parse(localStorage.getItem(FERIADOS_KEY)||'[]'); }catch(e){}
     $('feriadosExtra').value = extra.map(fmt).join('\n');
+    $('notifEstado').textContent = estadoNotif();
+    $('btnNotif').hidden = !('Notification' in window) || Notification.permission!=='default';
   }
   $('btnMenu').addEventListener('click', ()=>{ renderMenu(); overlayMenu.classList.add('show'); });
   $('btnGuardarFeriados').addEventListener('click', ()=>{
@@ -1051,7 +1240,10 @@
     feriados = new Set(FERIADOS_BASE.concat(out));
     renderAll(); toast('Feriados guardados');
   });
-  $('btnExportar').addEventListener('click', ()=>{
+  function ultimoBackup(){ try{ return localStorage.getItem(BACKUP_KEY); }catch(e){ return null; } }
+  $('bannerBackupBtn').addEventListener('click', exportar);
+  $('btnExportar').addEventListener('click', exportar);
+  function exportar(){
     if(!clientes.length){ toast('No hay clientes para exportar'); return; }
     const blob = new Blob([JSON.stringify(clientes,null,2)],{type:'application/json'});
     const url = URL.createObjectURL(blob);
@@ -1060,8 +1252,8 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),2000);
     try{ localStorage.setItem(BACKUP_KEY, hoy()); }catch(e){}
-    renderMenu(); toast('Backup descargado');
-  });
+    renderMenu(); renderAll(); toast('Backup descargado');
+  }
   $('btnImportar').addEventListener('click', ()=>$('fileImportar').click());
   $('fileImportar').addEventListener('change', e=>{
     const file=e.target.files[0]; e.target.value=''; if(!file) return;
@@ -1096,6 +1288,7 @@
   $('fechaHoy').textContent = (hh<12?'¡Buen día! ':hh<20?'¡Buenas tardes! ':'¡Buenas noches! ')+'Hoy es '+fmtLargo(hoy()).toLowerCase()+'.';
   load();
   renderAll();
+  revisarRecordatorios();
 })();
 </script>
 </body>
