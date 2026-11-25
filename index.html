@@ -588,10 +588,11 @@
   function diasEntre(a,b){ return Math.round((parse(b)-parse(a))/86400000); }
   // Todos los días desde hoy hasta el 4.º día hábil, incluidos sábados, domingos y feriados
   // (el cliente puede pagar esos días aunque no sean hábiles).
+  const DIAS_ATRAS = 5;   // permite cargar promesas tomadas hasta 5 días antes
   function opcionesPromesa(){
     const fin = limitePromesa();
     const out=[];
-    for(let d=hoy(); d<=fin; d=addDays(d,1)) out.push(d);
+    for(let d=addDays(hoy(),-DIAS_ATRAS); d<=fin; d=addDays(d,1)) out.push(d);
     return out;
   }
   function limitePromesa(){ return sumarHabiles(habilDesde(hoy()), DIAS_PROMESA); }
@@ -635,6 +636,8 @@
       return {neg:true, html:`<b>Promesa negociada.</b> Todavía no se puede registrar en el sistema. Te agendo un llamado el <b>${fmtCorto(p.fechaLlamado)}</b> (5 días hábiles antes) para registrarla.`};
     }
     const p = planDeLlamado(fechaPromesa,true);
+    if(p.fechaLlamado < hoy())
+      return {neg:false, html:`La verificación del pago correspondía el <b>${fmtCorto(p.fechaLlamado)}</b>. Te va a aparecer en <b>Atrasados</b> para llamarlo hoy.`};
     return {neg:false, html:`Registrala en el sistema. Te agendo el llamado para verificar el pago el <b>${fmtCorto(p.fechaLlamado)}</b> (día hábil siguiente al vencimiento).`};
   }
 
@@ -878,11 +881,11 @@
   // ---------- Selector de promesa (reutilizable) ----------
   function llenarSelectPromesa(sel, actual){
     const ops = opcionesPromesa();
-    sel.innerHTML = ops.map((f,i)=>`<option value="${f}">${fmtCorto(f)}${i===0?' (hoy)':''}${!esHabil(f)?(esFeriado(f)?' · feriado':' · no hábil'):''}${i===ops.length-1?' · último día':''}</option>`).join('')
+    sel.innerHTML = ops.map((f,i)=>`<option value="${f}">${fmtCorto(f)}${f===hoy()?' (hoy)':f<hoy()?' (hace '+diasEntre(f,hoy())+(diasEntre(f,hoy())===1?' día)':' días)'):''}${!esHabil(f)?(esFeriado(f)?' · feriado':' · no hábil'):''}${i===ops.length-1?' · último día':''}</option>`).join('')
       + '<option value="otra">Otra fecha (negociada)…</option>';
     if(actual && ops.includes(actual)) sel.value = actual;
     else if(actual){ sel.value = 'otra'; }
-    else sel.value = ops[0];
+    else sel.value = hoy();
   }
   function leerPromesa(sel, otra){ return sel.value==='otra' ? otra.value : sel.value; }
   function actualizarInfo(sel, otraField, otra, info){
@@ -947,7 +950,7 @@
     } else {
       const fp = leerPromesa($('f_promesaSel'), $('f_promesaOtra'));
       if(!fp){ alert('Elegí la fecha de la promesa.'); return; }
-      if(fp < hoy()){ alert('La promesa no puede ser anterior a hoy.'); return; }
+      if(fp < addDays(hoy(),-DIAS_ATRAS)){ alert('La promesa puede ser de hasta '+DIAS_ATRAS+' días atrás.'); return; }
       const c = normalizar(Object.assign({id:uid(), creado:hoy(), estado:'activo'}, datos, {fechaPromesa:fp}));
       aplicarPromesa(c, fp);
       c.historial.push({fecha:hoy(), resultado:'alta', comentario:(c.negociada?'Promesa negociada para el ':'Promesa para el ')+fmt(fp)});
@@ -1186,7 +1189,7 @@
     const c = getC(overlayPromesa.dataset.id); if(!c) return;
     const fp = leerPromesa($('np_sel'), $('np_otra'));
     if(!fp){ alert('Elegí la fecha de la promesa.'); return; }
-    if(fp < hoy()){ alert('La promesa no puede ser anterior a hoy.'); return; }
+    if(fp < addDays(hoy(),-DIAS_ATRAS)){ alert('La promesa puede ser de hasta '+DIAS_ATRAS+' días atrás.'); return; }
     snapshot();
     aplicarPromesa(c, fp);
     c.estado = 'activo';
