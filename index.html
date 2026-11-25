@@ -4,36 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Cartera de Clientes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    color-scheme:dark;
-    --bg:#0d0f14; --panel:#161920; --panel2:#1e222b; --hover:#262b36; --border:#2a2f3a;
-    --text:#eceef2; --muted:#98a1b2; --accent:#5b93ff; --accent2:#4279e6; --on-accent:#fff;
-    --red:#f26464; --red-strong:#d63a3a; --red-bg:#2c1617;
-    --amber:#f2a93b; --amber-bg:#2b2314;
-    --green:#3ecf8e; --green-bg:#12291f;
-    --blue:#6ab0f2; --blue-bg:#14212c;
-    --violet:#b69cff; --violet-bg:#221b33;
-    --grey-bg:#20242d;
-    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,0.45);
+    color-scheme:light;
+    --bg:#f6f4ef; --panel:#ffffff; --panel2:#f3f1ec; --hover:#ebe8e1; --border:#e7e3da;
+    --text:#2b2a33; --muted:#7a7785; --accent:#5b6cf0; --accent2:#4a5ad8; --on-accent:#fff;
+    --red:#e5534b; --red-strong:#cc3d35; --red-bg:#fdecea;
+    --amber:#c47a10; --amber-bg:#fdf2dc;
+    --green:#2f9e6e; --green-bg:#e3f5ec;
+    --blue:#3f7fd8; --blue-bg:#e6effc;
+    --violet:#7b5ce0; --violet-bg:#eee9fd;
+    --grey-bg:#efede8;
+    --radius:20px; --shadow:0 8px 24px rgba(60,50,30,0.10); --soft:0 1px 3px rgba(60,50,30,0.06);
   }
-  @media (prefers-color-scheme: light){
+  @media (prefers-color-scheme: dark){
     :root{
-      color-scheme:light;
-      --bg:#f3f4f8; --panel:#fff; --panel2:#f1f3f7; --hover:#e6e9f0; --border:#dde1e9;
-      --text:#171a21; --muted:#667085; --accent:#2f6fed; --accent2:#2259cc;
-      --red:#d92d20; --red-strong:#b42318; --red-bg:#fde9e7;
-      --amber:#a86200; --amber-bg:#fdf0d8;
-      --green:#0f7a56; --green-bg:#dcf5ea;
-      --blue:#1d6fb8; --blue-bg:#e1effb;
-      --violet:#6941c6; --violet-bg:#efe9fd;
-      --grey-bg:#eceef3; --shadow:0 10px 30px rgba(20,30,60,0.14);
+      color-scheme:dark;
+      --bg:#17161c; --panel:#211f28; --panel2:#2a2832; --hover:#33303c; --border:#34313d;
+      --text:#f1eff5; --muted:#a29fae; --accent:#8090ff; --accent2:#6d7ef0;
+      --red:#ff7a72; --red-strong:#f05a52; --red-bg:#3a2224;
+      --amber:#f0b04a; --amber-bg:#3a2f1c;
+      --green:#5fd19e; --green-bg:#1c3329;
+      --blue:#7fb0f5; --blue-bg:#1e2a3d;
+      --violet:#b5a0ff; --violet-bg:#2b2440;
+      --grey-bg:#2a2832; --shadow:0 8px 24px rgba(0,0,0,0.4); --soft:none;
     }
   }
   *{box-sizing:border-box;}
   [hidden]{display:none !important;}
   body{
-    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0; font-family:"Nunito",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     background:var(--bg); color:var(--text); min-height:100vh;
     -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
   }
@@ -253,6 +256,42 @@
   }
   .toast.show{opacity:1; transform:translateX(-50%); pointer-events:auto;}
   .toast button{background:none; border:none; color:inherit; font-weight:800; font-size:13.5px; text-decoration:underline; cursor:pointer; padding:0;}
+
+  /* Estilo amable */
+  header h1{font-size:24px; letter-spacing:-0.01em;}
+  .summary .card, .item, .cal, .tabs, .search, .proximo{box-shadow:var(--soft);}
+  .summary .card, .item, .cal{border-color:transparent;}
+  .tabs{border-color:transparent; border-radius:18px;}
+  .tab{border-radius:14px;}
+  .tab.active{background:var(--accent); color:var(--on-accent); box-shadow:none;}
+  .tab.active .n{background:#fff; color:var(--accent);}
+  .summary .card{padding:16px 8px 14px;}
+  .summary .num{font-size:30px;}
+  .item{border-radius:18px; padding:14px 14px 14px 18px;}
+  .item::before{top:14px; bottom:14px; left:6px; width:5px; border-radius:5px;}
+  .item:hover{background:var(--panel); transform:translateY(-1px); box-shadow:var(--shadow);}
+  .item{transition:transform .12s, box-shadow .12s;}
+  .hora{background:var(--panel2); border-radius:12px; padding:8px 0; width:60px;}
+  .badge{padding:5px 11px;}
+  .search{border-color:transparent; border-radius:16px; padding:14px 16px;}
+  .chip{border-color:transparent; background:var(--panel); box-shadow:var(--soft);}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent);}
+  .cal{padding:14px;}
+  .cal-day{border-radius:12px;}
+  .cal-day.today{border-color:var(--accent); border-width:2px;}
+  .icon-btn{border-color:transparent; box-shadow:var(--soft); border-radius:14px;}
+  .fab{border-radius:20px; width:60px; height:60px;}
+  .sheet{border-radius:28px 28px 0 0;}
+  @media (min-width:760px){ .sheet{border-radius:28px;} }
+  .field input, .field select, .field textarea{border-radius:14px; border-color:transparent; padding:12px 14px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--accent); background:var(--panel);}
+  .btn{border-radius:16px;}
+  .info-box{border-radius:16px; padding:12px 14px;}
+  .proximo{border-color:transparent; border-radius:18px; background:var(--blue-bg);}
+  .hist-item{border-radius:14px;}
+  .section-title{text-transform:none; letter-spacing:0; font-size:15px; color:var(--text); font-weight:800;}
+  .detail-section h3{text-transform:none; letter-spacing:0; font-size:15px; color:var(--text);}
+  .empty .big{font-size:42px;}
 </style>
 </head>
 <body>
@@ -670,7 +709,7 @@
     bloque('Atrasados', atrasados, true);
     bloque('Hoy · '+deHoy.length+(deHoy.length===1?' llamado':' llamados'), deHoy, false);
     if(!atrasados.length && !deHoy.length){
-      cont.insertAdjacentHTML('beforeend','<div class="empty"><div class="big">✓</div>No tenés llamados pendientes para hoy.</div>');
+      cont.insertAdjacentHTML('beforeend','<div class="empty"><div class="big">🎉</div>¡Todo al día! No tenés llamados pendientes para hoy.</div>');
     }
     bloque('Próximo día hábil · '+fmtCorto(proximo), manana, true);
   }
@@ -1053,7 +1092,8 @@
   let ultimoDia = hoy();
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && hoy()!==ultimoDia){ ultimoDia=hoy(); calMes=null; calSel=null; renderAll(); } });
 
-  $('fechaHoy').textContent = fmtLargo(hoy());
+  const hh=new Date().getHours();
+  $('fechaHoy').textContent = (hh<12?'¡Buen día! ':hh<20?'¡Buenas tardes! ':'¡Buenas noches! ')+'Hoy es '+fmtLargo(hoy()).toLowerCase()+'.';
   load();
   renderAll();
 })();
